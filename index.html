@@ -375,10 +375,10 @@
 
 <!-- ═══════════════════════════════════════════ TABS ═══ -->
 <div class="tab-bar">
-    <button class="tab-btn active-all" onclick="showTab('all', this)">Semua <span class="badge" style="background:var(--primary-glow);color:var(--primary)">25</span></button>
+    <button class="tab-btn active-all" onclick="showTab('master', this)">Tabel R/R</button>
+    <button class="tab-btn" onclick="showTab('all', this)">Semua <span class="badge" style="background:var(--primary-glow);color:var(--primary)">25</span></button>
     <button class="tab-btn" onclick="showTab('tier1', this)">Tier 1 <span class="badge badge-t1">15</span></button>
     <button class="tab-btn" onclick="showTab('tier2', this)">Tier 2 <span class="badge badge-t2">10</span></button>
-    <button class="tab-btn" onclick="showTab('master', this)">Tabel R/R</button>
     <button class="tab-btn" onclick="showTab('removed', this)">Dibuang 🚫</button>
     <button class="tab-btn" onclick="showTab('risiko', this)" style="color: #ef4444;">Data Risiko 🚨</button>
     <button class="tab-btn" onclick="showTab('weekly', this)" style="color: #3b82f6;">Weekly Plan 🗓️</button>
@@ -389,7 +389,7 @@
 <!-- ═══════════════════════════════════════════════════════════════ -->
 <!--                          TAB: ALL                              -->
 <!-- ═══════════════════════════════════════════════════════════════ -->
-<div id="tab-all" class="tab-content active">
+<div id="tab-all" class="tab-content">
 
 <div class="alert alert-important" style="margin-top:1rem">
     <strong>ℹ️ Cara Baca Verdict:</strong> Setiap koin dinilai berdasarkan 5 kriteria (Inovasi, Performa vs BTC, Volume, Suplai, dan TVL/DeFi). 
@@ -861,7 +861,7 @@
 <!-- ═══════════════════════════════════════════════════════════════ -->
 <!--                     TAB: MASTER R/R TABLE                      -->
 <!-- ═══════════════════════════════════════════════════════════════ -->
-<div id="tab-master" class="tab-content">
+<div id="tab-master" class="tab-content active">
 
 <h2 style="font-family:'Outfit',sans-serif; color:var(--text-bright); margin-top:1rem; font-size:1.5rem;">💰 Tabel Risk/Reward Gabungan — Semua Tier</h2>
 
