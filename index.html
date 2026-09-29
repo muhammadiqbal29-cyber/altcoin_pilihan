@@ -1795,7 +1795,9 @@ Tabel ini menggabungkan ketiga faktor risiko. Koin dengan <strong>3 bendera mera
 </h1>
 
 <div class="alert alert-important" style="margin-top: 1rem;">
-    <strong>ℹ️ Info:</strong> Berita di bawah ini diambil secara otomatis dari <strong>Cointelegraph</strong> dan telah difilter <strong>HANYA</strong> untuk berita yang menyebutkan koin-koin di dalam daftarmu (QNT, SOL, APT, dll).
+    <strong>ℹ️ Info:</strong> Berita di bawah ini diambil otomatis dari <strong>Cointelegraph</strong> dan difilter KHUSUS untuk: 
+    <br>1) Koin-koin di daftarmu (BTC, SOL, QNT, dll)
+    <br>2) Berita Makro/AS yang menggerakkan pasar (SEC, The Fed, Inflasi, ETF, dll).
 </div>
 
 <div id="news-container" style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
@@ -1990,17 +1992,36 @@ async function fetchCoinNews() {
         
         let filteredNews = [];
         
-        // Filter berita yang mention koin di COIN_MAP
+        // Keyword makro / Amerika yang penting
+        const macroKeywords = ['SEC', 'FED', 'INFLATION', 'RATE CUT', 'ETF', 'ELECTION', 'POWELL', 'GENSLER', 'U.S.', 'USA', 'TRUMP', 'HARRIS'];
+        
+        // Filter berita yang mention koin di COIN_MAP atau macro
         data.items.forEach(item => {
             const textToSearch = (item.title + ' ' + item.description).toUpperCase();
+            
+            // Cek koin
             const mentionedCoins = myCoins.filter(coin => {
-                // Regex word boundary supaya "AR" nggak match dengan "MARKET"
                 const regex = new RegExp('\\b' + coin + '\\b', 'i');
                 return regex.test(textToSearch);
             });
             
-            if (mentionedCoins.length > 0) {
-                item.mentioned = mentionedCoins.join(', ');
+            // Cek makro
+            const mentionedMacro = macroKeywords.filter(kw => {
+                const regex = new RegExp('\\b' + kw + '\\b', 'i');
+                return regex.test(textToSearch);
+            });
+            
+            const allMentions = [...mentionedCoins, ...mentionedMacro];
+            
+            if (allMentions.length > 0) {
+                // Deduplikasi jika ada overlap
+                item.mentioned = [...new Set(allMentions)].join(', ');
+                
+                // Set warna pill: jika ada koin = biru, jika murni makro = ungu/merah
+                item.pillBg = mentionedCoins.length > 0 ? 'rgba(59,130,246,0.2)' : 'rgba(168,85,247,0.2)';
+                item.pillColor = mentionedCoins.length > 0 ? '#60a5fa' : '#c084fc';
+                item.pillLabel = mentionedCoins.length > 0 ? 'Koin: ' + item.mentioned : 'Makro AS: ' + item.mentioned;
+                
                 filteredNews.push(item);
             }
         });
@@ -2017,7 +2038,7 @@ async function fetchCoinNews() {
             <a href="${news.link}" target="_blank" style="text-decoration:none;">
                 <div class="coin-card" style="margin-bottom:0; cursor:pointer; transition: transform 0.2s; background: rgba(30,41,59,0.5);">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.5rem;">
-                        <span class="pill" style="background:rgba(59,130,246,0.2); color:#60a5fa;">Berita Koin: ${news.mentioned}</span>
+                        <span class="pill" style="background:${news.pillBg}; color:${news.pillColor};">${news.pillLabel}</span>
                         <span style="font-size:0.8rem; color:var(--text-dim);">${date} WIB</span>
                     </div>
                     <h3 style="color:var(--text-bright); margin-top:0.5rem; font-size:1.1rem; line-height:1.4;">${news.title}</h3>
