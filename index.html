@@ -1909,8 +1909,8 @@ async function fetchFundingRates() {
             const cells = row.querySelectorAll('td');
             if (cells.length < 12) return;
             
-            // Get coin name from cell[1]
-            const coinName = cells[1].textContent.trim().replace(/[☪️\s]/g, '');
+            // Get coin name from cell[1] (only inside <strong> to ignore partner text)
+            const coinName = cells[1].querySelector('strong').textContent.trim().replace(/[☪️\s]/g, '');
             const binanceSymbol = COIN_MAP[coinName];
             
             if (!binanceSymbol || dataMap[binanceSymbol] === undefined) {
