@@ -1909,7 +1909,29 @@ async function fetchFundingRates() {
             // Format price: remove trailing zeroes dynamically
             const formattedPrice = price < 1 ? '$' + price.toString() : price.toLocaleString('en-US', {style:'currency', currency:'USD'});
             
-            cells[2].innerHTML = '<span style="color:#10b981;">' + formattedPrice + '</span>';
+            // Evaluasi jarak harga terhadap Entry
+            let priceColor = '#cbd5e1';
+            let diffLabel = '';
+            const entryText = cells[3].textContent.trim();
+            const matches = entryText.match(/[\d.]+/g);
+            if (matches && matches.length > 0) {
+                const upperEntry = Math.max(...matches.map(m => parseFloat(m)));
+                if (price <= upperEntry) {
+                    priceColor = '#10b981'; // Hijau
+                    diffLabel = ' 🟢 Area Beli';
+                } else {
+                    const diffPct = (((price - upperEntry) / upperEntry) * 100);
+                    if (diffPct <= 10) {
+                        priceColor = '#fbbf24'; // Kuning
+                        diffLabel = ' ⚠️ +' + diffPct.toFixed(1) + '%';
+                    } else {
+                        priceColor = '#ef4444'; // Merah
+                        diffLabel = ' 🔴 +' + diffPct.toFixed(1) + '%';
+                    }
+                }
+            }
+            
+            cells[2].innerHTML = '<span style="color:' + priceColor + ';">' + formattedPrice + '</span><br><span style="font-size:0.75rem; color:' + priceColor + '; opacity:0.85;">' + diffLabel + '</span>';
             cells[10].innerHTML = '<span class="pill" style="background:' + signal.bg + '; color:' + signal.color + '; cursor:help;" title="FR: ' + pctStr + '">' + signal.label + '</span>';
             updated++;
         });
