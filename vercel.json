@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/binance",
+      "destination": "https://fapi.binance.com/fapi/v1/premiumIndex"
+    }
+  ]
+}

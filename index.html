@@ -1850,26 +1850,12 @@ async function fetchFundingRates() {
     status.innerHTML = '🔄 Menghubungi server Binance...';
     
     try {
-        // Coba beberapa cara untuk menghindari blokir CORS browser
-        const BINANCE_URL = 'https://fapi.binance.com/fapi/v1/premiumIndex';
-        const PROXIES = [
-            BINANCE_URL,  // Direct (works if served from server)
-            'https://api.allorigins.win/raw?url=' + encodeURIComponent(BINANCE_URL),
-            'https://corsproxy.io/?' + encodeURIComponent(BINANCE_URL),
-            'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(BINANCE_URL)
-        ];
+        // Menggunakan Vercel Reverse Proxy (/api/binance) untuk bypass CORS!
+        const resp = await fetch('/api/binance');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
         
-        let data = null;
-        let lastErr = null;
-        for (const url of PROXIES) {
-            try {
-                const resp = await fetch(url, { signal: AbortSignal.timeout(8000) });
-                if (!resp.ok) continue;
-                data = await resp.json();
-                if (Array.isArray(data) && data.length > 0) break;
-            } catch(e) { lastErr = e; continue; }
-        }
-        if (!data || !Array.isArray(data)) throw new Error('Semua proxy gagal: ' + (lastErr ? lastErr.message : 'No data'));
+        if (!data || !Array.isArray(data)) throw new Error('Format data salah atau kosong');
         
         // Build lookup: symbol -> lastFundingRate
         const frMap = {};
