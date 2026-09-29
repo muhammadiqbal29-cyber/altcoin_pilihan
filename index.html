@@ -1924,9 +1924,12 @@ async function fetchFundingRates() {
         console.error('Funding Rate Error:', err);
     } finally {
         btn.disabled = false;
-        btn.textContent = '📡 Ambil Live Funding Rate (Binance API — GRATIS!)';
+        btn.textContent = '📡 Refresh Live Data (Binance API)';
     }
 }
+
+// Auto-fetch saat halaman pertama kali dibuka
+window.addEventListener('DOMContentLoaded', fetchFundingRates);
 </script>
 
 </body>
