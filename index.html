@@ -322,6 +322,66 @@
         .master-table th { position: sticky; top: 0; z-index: 2; }
         .master-table .t1-row td:first-child { border-left: 3px solid var(--green); }
         .master-table .t2-row td:first-child { border-left: 3px solid var(--yellow); }
+
+        /* ─── FLOATING REFRESH BUTTON (MOBILE) ─── */
+        #btn-refresh-fr {
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.4);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            z-index: 9999;
+        }
+        
+        #btn-refresh-fr:active {
+            transform: scale(0.95);
+        }
+
+        .btn-text-desktop { display: inline; }
+        .btn-text-mobile { display: none; }
+
+        @media (max-width: 768px) {
+            #btn-refresh-fr {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                margin-bottom: 0;
+                width: 60px;
+                height: 60px;
+                padding: 0;
+                border-radius: 50%;
+                font-size: 1.5rem;
+                box-shadow: 0 6px 16px rgba(16,185,129,0.5);
+            }
+            .btn-text-desktop { display: none; }
+            .btn-text-mobile { display: inline; }
+            
+            .master-table {
+                min-width: 800px;
+            }
+            
+            .tab-bar {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .tab-btn {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+        }
         .pill {
             display: inline-block;
             padding: 2px 8px;
@@ -873,7 +933,10 @@
 <div style="color:var(--text-dim); font-size:0.82rem;">Funding Rate BTC: 0.0012% - 0.0056% (sangat rendah, tidak ada ancaman dump). Update: 29 Sep 2026 06:42 WIB</div>
 </div>
 </div>
-<button id="btn-refresh-fr" onclick="fetchFundingRates()" style="margin-bottom:1rem; background:linear-gradient(135deg, #3b82f6, #10b981); color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:0.95rem; transition:all 0.3s ease; box-shadow:0 2px 8px rgba(59,130,246,0.3);">📡 Ambil Live Funding Rate (Binance API — GRATIS!)</button>
+<button id="btn-refresh-fr" onclick="fetchFundingRates()">
+    <span class="btn-text-mobile">📡</span>
+    <span class="btn-text-desktop">📡 Refresh Live Data (Binance API)</span>
+</button>
 <p id="api-status" style="color:var(--text-dim); font-size:0.9rem;"></p>
 
 <div class="alert alert-important"><strong>Cara Baca:</strong> Kolom Tier menunjukkan asal koin. R/R dihitung dari harga entry ke TP2 vs ke SL. Koin diurutkan berdasarkan R/R terbaik.</div>
@@ -1846,7 +1909,7 @@ async function fetchFundingRates() {
     const btn = document.getElementById('btn-refresh-fr');
     const status = document.getElementById('api-status');
     btn.disabled = true;
-    btn.textContent = '⏳ Mengambil data...';
+    btn.innerHTML = '<span class="btn-text-mobile">⏳</span><span class="btn-text-desktop">⏳ Mengambil data...</span>';
     status.innerHTML = '🔄 Menghubungi server Binance...';
     
     try {
@@ -1946,7 +2009,7 @@ async function fetchFundingRates() {
         console.error('Funding Rate Error:', err);
     } finally {
         btn.disabled = false;
-        btn.textContent = '📡 Refresh Live Data (Binance API)';
+        btn.innerHTML = '<span class="btn-text-mobile">📡</span><span class="btn-text-desktop">📡 Refresh Live Data (Binance API)</span>';
     }
 }
 
