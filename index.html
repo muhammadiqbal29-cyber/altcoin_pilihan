@@ -1992,35 +1992,67 @@ async function fetchCoinNews() {
         
         let filteredNews = [];
         
-        // Keyword makro / Amerika yang penting
-        const macroKeywords = ['SEC', 'FED', 'INFLATION', 'RATE CUT', 'ETF', 'ELECTION', 'POWELL', 'GENSLER', 'U.S.', 'USA', 'TRUMP', 'HARRIS'];
+        // Keyword makro (hanya yang langsung gerakkan harga)
+        const macroKeywords = ['RATE CUT', 'RATE HIKE', 'ETF APPROVAL', 'SPOT ETF', 'CRYPTO BAN', 'CRYPTO REGULATION'];
         
-        // Filter berita yang mention koin di COIN_MAP atau macro
+        // Judul sampah yang harus dibuang
+        const junkPatterns = [
+            /here.?s what happened/i,
+            /daily recap/i,
+            /weekly roundup/i,
+            /PAC spend/i,
+            /lobby/i,
+            /campaign/i,
+            /ohio|senate|congress|house bill/i,
+            /price analysis.*top/i,
+        ];
+        
+        // Koin pendek yang rawan false positive
+        const shortCoins = ['LINK', 'AR', 'W', 'OP', 'ZK', 'GRT', 'FET'];
+        const nameMap = {
+            'LINK': 'CHAINLINK', 'AR': 'ARWEAVE', 'W': 'WORMHOLE',
+            'OP': 'OPTIMISM', 'ZK': 'ZKSYNC', 'GRT': 'THE GRAPH', 'FET': 'FETCH'
+        };
+        
         data.items.forEach(item => {
-            const textToSearch = (item.title + ' ' + item.description).toUpperCase();
+            const title = item.title || '';
+            const desc = item.description || '';
+            const fullText = title + ' ' + desc;
             
-            // Cek koin
+            // Skip judul sampah
+            if (junkPatterns.some(p => p.test(title))) return;
+            
+            // Cek koin (dengan filter ketat untuk ticker pendek)
             const mentionedCoins = myCoins.filter(coin => {
-                const regex = new RegExp('\\b' + coin + '\\b', 'i');
-                return regex.test(textToSearch);
+                if (coin === 'BITCOIN' || coin === 'BTC') {
+                    // BTC/BITCOIN harus muncul di JUDUL saja
+                    return new RegExp('\\b' + coin + '\\b', 'i').test(title);
+                }
+                if (shortCoins.includes(coin)) {
+                    // Ticker pendek: harus ada $TICKER atau nama lengkap
+                    const tickerRegex = new RegExp('\\$' + coin + '\\b|\\b' + coin + '(?:USDT|/USD)', 'i');
+                    const fullName = nameMap[coin];
+                    const nameRegex = fullName ? new RegExp('\\b' + fullName + '\\b', 'i') : null;
+                    return tickerRegex.test(fullText) || (nameRegex && nameRegex.test(fullText));
+                }
+                // Ticker panjang (QNT, SOL, NEAR, dll) — word boundary di judul
+                return new RegExp('\\b' + coin + '\\b', 'i').test(title);
             });
             
-            // Cek makro
+            // Cek makro (hanya di judul)
             const mentionedMacro = macroKeywords.filter(kw => {
-                const regex = new RegExp('\\b' + kw + '\\b', 'i');
-                return regex.test(textToSearch);
+                return title.toUpperCase().indexOf(kw) !== -1;
             });
             
             const allMentions = [...mentionedCoins, ...mentionedMacro];
             
             if (allMentions.length > 0) {
-                // Deduplikasi jika ada overlap
                 item.mentioned = [...new Set(allMentions)].join(', ');
                 
-                // Set warna pill: jika ada koin = biru, jika murni makro = ungu/merah
+                // Set warna pill: koin = biru, makro = ungu
                 item.pillBg = mentionedCoins.length > 0 ? 'rgba(59,130,246,0.2)' : 'rgba(168,85,247,0.2)';
                 item.pillColor = mentionedCoins.length > 0 ? '#60a5fa' : '#c084fc';
-                item.pillLabel = mentionedCoins.length > 0 ? 'Koin: ' + item.mentioned : 'Makro AS: ' + item.mentioned;
+                item.pillLabel = mentionedCoins.length > 0 ? 'Koin: ' + item.mentioned : 'Makro: ' + item.mentioned;
                 
                 filteredNews.push(item);
             }
