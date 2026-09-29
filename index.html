@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rangkuman Screening — Tier 1 & Tier 2 Gabungan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b1121;
+            --surface: #131b2e;
+            --card: #1a2340;
+            --border: #2a3555;
+            --text: #c8d6e5;
+            --text-bright: #f1f5f9;
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.15);
+            --green: #10b981;
+            --green-glow: rgba(16, 185, 129, 0.12);
+            --yellow: #f59e0b;
+            --yellow-glow: rgba(245, 158, 11, 0.12);
+            --red: #ef4444;
+            --red-glow: rgba(239, 68, 68, 0.12);
+            --blue: #3b82f6;
+            --purple: #a78bfa;
+            --tier1: #10b981;
+            --tier2: #f59e0b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ──────────────────────── */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            padding: 3.5rem 2rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(99,102,241,0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 50%, rgba(16,185,129,0.06) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #818cf8, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        .hero .subtitle {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+        .hero .btc-ref {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            margin-top: 1.2rem;
+            font-size: 0.9rem;
+            color: var(--text-bright);
+        }
+        .hero .btc-ref span { color: var(--green); font-weight: 600; }
+
+        /* ─── LEGEND ──────────────────────── */
+        .legend-bar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            font-size: 0.82rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: #94a3b8;
+        }
+        .legend-item .emoji { font-size: 1rem; }
+
+        /* ─── TABS ────────────────────────── */
+        .tab-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem 2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0;
+        }
+        .tab-btn {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            background: transparent;
+            color: #64748b;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.25s ease;
+        }
+        .tab-btn:hover { color: var(--text-bright); }
+        .tab-btn.active-tier1 { color: var(--tier1); border-bottom-color: var(--tier1); }
+        .tab-btn.active-tier2 { color: var(--tier2); border-bottom-color: var(--tier2); }
+        .tab-btn.active-all { color: var(--primary); border-bottom-color: var(--primary); }
+        .tab-btn .badge {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 0.4rem;
+            font-weight: 700;
+            vertical-align: middle;
+        }
+        .badge-t1 { background: var(--green-glow); color: var(--green); }
+        .badge-t2 { background: var(--yellow-glow); color: var(--yellow); }
+
+        /* ─── CONTENT ─────────────────────── */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ─── COIN CARD ───────────────────── */
+        .coin-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 2rem;
+            margin-bottom: 1.8rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        .coin-card:hover {
+            border-color: #4a5580;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        .coin-card .tier-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .tier-tag.t1 { background: var(--green-glow); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+        .tier-tag.t2 { background: var(--yellow-glow); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
+
+        .coin-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-bright);
+            margin-bottom: 0.3rem;
+        }
+        .coin-card .coin-meta {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 1.2rem;
+        }
+
+        /* ─── TABLES ──────────────────────── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.88rem;
+            background: rgba(11, 17, 33, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th {
+            background: #162040;
+            color: var(--text-bright);
+            font-weight: 600;
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 11px 14px;
+            border-bottom: 1px solid rgba(42, 53, 85, 0.5);
+            vertical-align: top;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        /* ─── ALERTS ──────────────────────── */
+        .alert {
+            padding: 1rem 1.3rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+        .alert-important {
+            background: rgba(99,102,241,0.1);
+            border-left: 4px solid var(--primary);
+            color: #c4b5fd;
+        }
+        .alert-warning {
+            background: rgba(245,158,11,0.1);
+            border-left: 4px solid var(--yellow);
+            color: #fcd34d;
+        }
+        .alert-danger {
+            background: rgba(239,68,68,0.1);
+            border-left: 4px solid var(--red);
+            color: #fca5a5;
+        }
+        .alert-success {
+            background: var(--green-glow);
+            border-left: 4px solid var(--green);
+            color: #6ee7b7;
+        }
+        .alert strong { color: inherit; }
+
+        /* ─── CHART NOTES / PARAGRAPHS ──── */
+        .note {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            margin: 0.8rem 0;
+            line-height: 1.6;
+        }
+        .note strong { color: var(--text-bright); }
+
+        /* ─── SUMMARY GRID ────────────────── */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .summary-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.2rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .summary-card .name { font-weight: 700; color: var(--text-bright); font-size: 1.05rem; }
+        .summary-card .detail { font-size: 0.82rem; color: #94a3b8; margin-top: 0.4rem; }
+        .summary-card .rr { font-weight: 700; color: var(--green); }
+
+        /* ─── HARAM SECTION ────────────────── */
+        .haram-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+        .haram-item {
+            background: var(--red-glow);
+            border: 1px solid rgba(239,68,68,0.25);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            font-size: 0.85rem;
+        }
+        .haram-item strong { color: #fca5a5; }
+        .haram-item .reason { color: #f87171; font-size: 0.78rem; margin-top: 0.2rem; }
+
+        /* ─── MASTER TABLE ────────────────── */
+        .master-table-wrap {
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        .master-table {
+            min-width: 1000px;
+        }
+        .master-table th { position: sticky; top: 0; z-index: 2; }
+        .master-table .t1-row td:first-child { border-left: 3px solid var(--green); }
+        .master-table .t2-row td:first-child { border-left: 3px solid var(--yellow); }
+        .pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+        .pill-t1 { background: var(--green-glow); color: var(--green); }
+        .pill-t2 { background: var(--yellow-glow); color: var(--yellow); }
+        .pill-buy { background: var(--green-glow); color: var(--green); }
+        .pill-wait { background: var(--yellow-glow); color: var(--yellow); }
+        .pill-no { background: var(--red-glow); color: var(--red); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .container { padding: 1rem; }
+            .coin-card { padding: 1.2rem; }
+            .tab-btn { font-size: 0.82rem; padding: 0.6rem 1rem; }
+            .legend-bar { padding: 0.8rem 1rem; gap: 0.8rem; font-size: 0.75rem; }
+        }
+    
+/* Funding Rate Signal Styles */
+.master-table th:nth-child(10),
+.master-table td:nth-child(10) {
+    min-width: 120px;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ HERO ═══ -->
+<div class="hero">
+    <h1>🏆 Rangkuman Screening Investasi</h1>
+    <p class="subtitle">Tier 1 &amp; Tier 2 — Fundamental + Teknikal | 27-28 September 2026</p>
+    <div class="btc-ref">
+        ₿ BTC $82,828 &nbsp;|&nbsp; 7D: <span>+5.44%</span> &nbsp;|&nbsp; 30D: <span>+6.56%</span>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ LEGEND ═══ -->
+<div class="legend-bar">
+    <div class="legend-item"><span class="emoji">✅</span> Lulus / Aman</div>
+    <div class="legend-item"><span class="emoji">⚠️</span> Hati-hati / Risiko</div>
+    <div class="legend-item"><span class="emoji">🔴</span> Bahaya / Gagal</div>
+    <div class="legend-item"><span class="emoji">➖</span> Tidak Relevan</div>
+    <div class="legend-item"><span class="emoji">🟢</span> Layak Beli</div>
+    <div class="legend-item"><span class="emoji">🏆</span> Top Pick</div>
+    <div class="legend-item"><span class="emoji">🚫</span> Haram / Syubhat</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ TABS ═══ -->
+<div class="tab-bar">
+    <button class="tab-btn active-all" onclick="showTab('all', this)">Semua <span class="badge" style="background:var(--primary-glow);color:var(--primary)">25</span></button>
+    <button class="tab-btn" onclick="showTab('tier1', this)">Tier 1 <span class="badge badge-t1">15</span></button>
+    <button class="tab-btn" onclick="showTab('tier2', this)">Tier 2 <span class="badge badge-t2">10</span></button>
+    <button class="tab-btn" onclick="showTab('master', this)">Tabel R/R</button>
+    <button class="tab-btn" onclick="showTab('removed', this)">Dibuang 🚫</button>
+    <button class="tab-btn" onclick="showTab('risiko', this)" style="color: #ef4444;">Data Risiko 🚨</button>
+    <button class="tab-btn" onclick="showTab('weekly', this)" style="color: #3b82f6;">Weekly Plan 🗓️</button>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--                          TAB: ALL                              -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-all" class="tab-content active">
+
+<div class="alert alert-important" style="margin-top:1rem">
+    <strong>ℹ️ Cara Baca Verdict:</strong> Setiap koin dinilai berdasarkan 5 kriteria (Inovasi, Performa vs BTC, Volume, Suplai, dan TVL/DeFi). 
+    Verdict <strong>✅</strong> = kriteria lulus, <strong>⚠️</strong> = hati-hati ada risiko, <strong>🔴</strong> = gagal total / bahaya, <strong>➖</strong> = tidak relevan untuk koin tersebut.
+    <br>Dokumen ini telah <strong>dibersihkan</strong> dari koin Haram &amp; Syubhat (HYPE, JUP, RAY, OGN).
+</div>
+
+<!-- ═══════════ TIER 1 COINS ═══════════ -->
+<h2 style="font-family:'Outfit',sans-serif; color:var(--tier1); margin-top:2.5rem; font-size:1.6rem; border-bottom:2px solid rgba(16,185,129,0.3); padding-bottom:0.5rem;">
+    🟢 TIER 1 — Fundamental Superior
+</h2>
+
+<!-- SOL -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>1. Solana (SOL) — 🏆 TOP PICK</h3>
+    <p class="coin-meta">Harga: $118.46 · MCap: $72.2B · Suplai: 92.6%</p>
+    <p class="section-title">Screening Fundamental</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>Inovasi</strong></td><td>Upgrade slot time 250ms (18 Sep 2026). Firedancer validator. Tim sangat aktif.</td><td>✅ Sangat Aktif</td></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+13.94%</strong> vs +5.44% · 30D: <strong>+16.75%</strong> vs +6.56%</td><td>✅ Outperform</td></tr>
+        <tr><td><strong>Volume</strong></td><td>Vol 24h: <strong>$3.58 Miliar</strong> · Vol/MCap: 4.95%</td><td>✅ Sangat Likuid</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>Circ/Total: <strong>92.6%</strong> — Hampir seluruh sudah beredar</td><td>✅ Sangat Aman</td></tr>
+        <tr><td><strong>DeFi/TVL</strong></td><td>Chain TVL: <strong>$6.73 Miliar</strong> · Fees 30d: $24.1 Juta</td><td>✅ Raja L1</td></tr>
+    </table>
+    <p class="section-title">Level Teknikal</p>
+    <table>
+        <tr><th>Level</th><th>Harga</th><th>Catatan</th></tr>
+        <tr><td>ATH</td><td>$260</td><td>November 2024</td></tr>
+        <tr><td>Support 1</td><td>$97</td><td>Low September 2026</td></tr>
+        <tr><td>Support Makro</td><td>$75</td><td>Support kritis jangka panjang</td></tr>
+        <tr><td>Resistance</td><td>$180</td><td>Zona Q4 2025</td></tr>
+    </table>
+    <p class="note"><strong>Pola:</strong> Higher-low sejak bear market. Struktur uptrend konsisten.</p>
+    <p class="note"><strong>Kesimpulan:</strong> Koin paling sehat. Outperform BTC, likuiditas raksasa, suplai hampir penuh, dan pendapatan on-chain tertinggi.</p>
+</div>
+
+<!-- ZEC -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>2. Zcash (ZEC) — 🏆 TOP PICK</h3>
+    <p class="coin-meta">Harga: $1,528 · MCap: $28B · Suplai: 80.7% · Halal (ShariaQuant)</p>
+    <p class="section-title">Screening Fundamental</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>Inovasi</strong></td><td>Electric Coin Company &amp; Zcash Foundation. Grayscale ETF ZCSH aktif.</td><td>✅ Aktif</td></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+14.89%</strong> · 30D: <strong>+107.15%</strong></td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>Volume</strong></td><td>Vol 24h: $1.40 Miliar · Vol/MCap: 5.02%</td><td>✅ Sangat Likuid</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>Circ/Max: <strong>80.7%</strong> — PoW murni, mining</td><td>✅ Aman</td></tr>
+        <tr><td><strong>DeFi/TVL</strong></td><td>N/A (bukan DeFi chain, didukung ETF Grayscale)</td><td>➖ N/A</td></tr>
+    </table>
+    <p class="section-title">Level Teknikal</p>
+    <table>
+        <tr><th>Level</th><th>Harga</th><th>Catatan</th></tr>
+        <tr><td>Peak Lokal</td><td>$1,590</td><td>19 September 2026</td></tr>
+        <tr><td>Support 1</td><td>$1,400-$1,450</td><td>Support terdekat</td></tr>
+        <tr><td>Support Koreksi</td><td>$1,000-$1,100</td><td>Koreksi -30% sehat</td></tr>
+    </table>
+    <p class="note"><strong>Katalis:</strong> Trifecta — Halving (emisi -50%) + ETF Grayscale + Viewing Keys.</p>
+    <p class="note"><strong>Kesimpulan:</strong> Re-pricing struktural +107%. Hati-hati entry di puncak. Entry ideal: $1,100-$1,200.</p>
+</div>
+
+<!-- NEAR -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>3. Near Protocol (NEAR) — 🏆 TOP PICK</h3>
+    <p class="coin-meta">Harga: $4.90 · MCap: $6.7B · Suplai: 100% · AI Chain</p>
+    <p class="section-title">Screening Fundamental</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>Inovasi</strong></td><td>Founder Illia Polosukhin ("Attention Is All You Need"). AI Agent &amp; Shade Agents.</td><td>✅ Sangat Aktif</td></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+43.44%</strong> · 30D: <strong>+177.03%</strong></td><td>✅ Luar Biasa</td></tr>
+        <tr><td><strong>Volume</strong></td><td>Vol 24h: $1.18 Miliar · Vol/MCap: 17.59%</td><td>✅ Sangat Likuid</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>Circ/Total: <strong>100.0%</strong></td><td>✅ Sempurna</td></tr>
+        <tr><td><strong>DeFi/TVL</strong></td><td>Chain TVL: $242 Juta (fee rendah tapi TVL tumbuh pesat)</td><td>⚠️ Fee Rendah</td></tr>
+    </table>
+    <div class="alert alert-danger"><strong>🔴 JANGAN BELI SEKARANG.</strong> Sudah reli +177% dalam 30 hari. Entry ideal: $2.80-$3.50.</div>
+</div>
+
+<!-- QNT — BARU DITAMBAHKAN -->
+<div class="coin-card" style="border-color: rgba(16,185,129,0.4); box-shadow: 0 0 25px rgba(16,185,129,0.08);">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>4. Quant Network (QNT) — 🏆 TOP PICK · ☪️ HALAL</h3>
+    <p class="coin-meta">Harga: $220.49 · MCap: $3.5B · Suplai: 99.5% · <strong style="color:var(--green)">Halal Murni (Software Licensing)</strong></p>
+    <p class="section-title">Screening Fundamental</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>Inovasi</strong></td><td>Overledger OS — middleware perbankan. Klien: <strong>The Clearing House</strong> (JPMorgan, BofA, Citi, Wells Fargo). Go-live 2027.</td><td>✅ Sangat Aktif</td></tr>
+        <tr><td><strong>vs BTC</strong></td><td>30D: <strong>+275.6%</strong> — Salah satu terbaik di pasar</td><td>✅ Outperform Luar Biasa</td></tr>
+        <tr><td><strong>Volume</strong></td><td>MCap $3.5 Miliar — Likuiditas aman</td><td>✅ Likuid</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>Circ/Max: <strong>99.5%</strong> (~14.5M dari 14.6M). <strong>Lebih langka dari BTC.</strong></td><td>✅ SEMPURNA</td></tr>
+        <tr><td><strong>Utilitas</strong></td><td>Bisnis lisensi software (seperti Microsoft/Oracle). BUKAN DeFi/Riba.</td><td>✅ Halal Murni</td></tr>
+    </table>
+    <p class="section-title">Level Teknikal</p>
+    <table>
+        <tr><th>Level</th><th>Harga</th><th>Catatan</th></tr>
+        <tr><td>ATH</td><td>$427.42</td><td>Masih ada ruang +75% menuju ATH</td></tr>
+        <tr><td>Harga Sekarang</td><td>$243.74</td><td>Over-extended. Reli +275% dalam 30 hari</td></tr>
+        <tr><td>Entry Ideal</td><td><strong>$150-$180</strong></td><td>Koreksi sehat pasca-reli</td></tr>
+        <tr><td>SL</td><td>$120</td><td>Risiko -20% hingga -33% dari zona beli</td></tr>
+        <tr><td>TP1</td><td>$300</td><td>+66% hingga +100% dari zona beli</td></tr>
+        <tr><td>TP2</td><td>$420</td><td>Mendekati ATH: +133% hingga +180%</td></tr>
+    </table>
+    <div class="alert alert-danger"><strong>⚠️ JANGAN BELI DI $243.</strong> Koreksi -30% hingga -50% wajar. Tunggu $150-$180.</div>
+    <p class="note"><strong>Bear Case:</strong> Institusi bayar dalam Fiat, bukan beli QNT di bursa langsung. Transparansi konversi dipertanyakan.</p>
+    <p class="note"><strong>Kesimpulan:</strong> Aset TIER 1 Mutlak — suplai terlangka, halal murni, klien bank sentral. Tapi timing masuk SANGAT KRITIS. Sabar tunggu $150-$180.</p>
+</div>
+
+<!-- SUI -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>5. Sui (SUI)</h3>
+    <p class="coin-meta">Harga: $1.15 · MCap: $5.1B · Suplai: 41.0% 🔴</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+53.37%</strong> · 30D: <strong>+65.82%</strong></td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>Volume</strong></td><td>Vol 24h: $1.04 Miliar · Vol/MCap: 20.34%</td><td>✅ Sangat Likuid</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>Circ/Max: <strong>41.0%</strong> — Masih banyak unlock VC menanti</td><td>🔴 Buruk</td></tr>
+        <tr><td><strong>TVL</strong></td><td>Chain TVL: $558 Juta</td><td>⚠️ TVL Bagus, Fee Rendah</td></tr>
+    </table>
+    <p class="note"><strong>Breakout bullish</strong> di atas $1.00 dan POC. NAMUN: dilusi 2.4x masih menanti (59% terkunci). Hati-hati unlock. SL: $0.95.</p>
+</div>
+
+<!-- LINK -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>6. Chainlink (LINK) — Raja RWA</h3>
+    <p class="coin-meta">Harga: $14.36 · MCap: $10.6B · Suplai: 74.8%</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+17.86%</strong> · 30D: <strong>+20.71%</strong></td><td>✅ Outperform</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>Circ/Max: <strong>74.8%</strong></td><td>✅ Bagus</td></tr>
+        <tr><td><strong>RWA</strong></td><td>CCIP: Swift, Euroclear, ANZ, 600+ bank. Pelindung $38.2B aset.</td><td>✅ Raja Infra RWA</td></tr>
+    </table>
+    <p class="note"><strong>Higher-low:</strong> $5.50 (2022) → $7.00 (2026). Akumulasi institusi. Entry ideal: $8-$9 (R/R→1:10.5).</p>
+</div>
+
+<!-- AERO -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>7. Aerodrome (AERO)</h3>
+    <p class="coin-meta">Harga: $0.78 · MCap: $839M · Suplai: 50.1% · Inflasi: 10.9%/thn</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+31.08%</strong> · 30D: <strong>+62.96%</strong></td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>50.1% — Setengah belum beredar (emisi veTokenomics)</td><td>⚠️ Sedang</td></tr>
+    </table>
+    <p class="note"><strong>Overextended.</strong> Membeli di $0.84 = mengejar pucuk reli. Entry ideal: $0.55-$0.65. SL: $0.45.</p>
+</div>
+
+<!-- KAS -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>8. Kaspa (KAS) — PoW Murni</h3>
+    <p class="coin-meta">Harga: $0.046 · MCap: $1.3B · Suplai: 96.6%</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+25.41%</strong> · 30D: <strong>+63.95%</strong></td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>96.6% — Hampir habis ditambang</td><td>✅ Sangat Aman</td></tr>
+        <tr><td><strong>Ekosistem</strong></td><td>TVL mendekati NOL. PoW tanpa DeFi.</td><td>🔴 KOSONG</td></tr>
+    </table>
+    <div class="alert alert-warning"><strong>⚠️ Bom Waktu Penambang:</strong> Butuh 400 JUTA transaksi/hari untuk menutup subsidi. Ekosistem DeFi KOSONG. Prob bearish: 70-75%.</div>
+    <p class="note">Target ceiling: $0.08-$0.12. <strong>High-risk murni.</strong></p>
+</div>
+
+<!-- AR -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>9. Arweave (AR)</h3>
+    <p class="coin-meta">Harga: $4.27 · MCap: $315M · Suplai: 99.5%</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+12.85%</strong> · 30D: <strong>+128.64%</strong></td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>99.5% — Tidak ada VC dump</td><td>✅ Sempurna</td></tr>
+    </table>
+    <div class="alert alert-danger"><strong>🔴 RSI ~81 OVERBOUGHT.</strong> Sudah +179% dari low. Tunggu RSI dingin. AO memiliki token sendiri — nilainya TIDAK mengalir 1:1 ke AR.</div>
+</div>
+
+<!-- TAO -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>10. Bittensor (TAO) — ☪️ HALAL (MUI)</h3>
+    <p class="coin-meta">Harga: $299 · MCap: $3.7B · Suplai: 54% · Revenue: $35 Juta/thn</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+32.45%</strong> · 30D: <strong>+35.98%</strong></td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>Revenue</strong></td><td>Klien PwC &amp; Dropbox. Revenue $35 Juta/tahun.</td><td>✅ Sangat Aktif</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>54% — Setengah masih emisi mining</td><td>⚠️ Sedang</td></tr>
+    </table>
+    <p class="note"><strong>Divergensi Bullish Masif:</strong> Okt 2024 harga $700 revenue $1M → Sep 2026 harga $280 revenue <strong>$35M</strong>. Pasar SALAH menilai. Prob bullish 60-65%.</p>
+</div>
+
+<!-- HNT -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>11. Helium (HNT) — Deep Value</h3>
+    <p class="coin-meta">Harga: $0.47 · MCap: $86M · Suplai: 86.1% · P/S: 4.7x</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+11.30%</strong> · 30D: <strong>+125.90%</strong></td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>Bisnis Riil</strong></td><td>AT&amp;T/T-Mobile. Burn $18 Juta/tahun. Gugatan SEC dibatalkan.</td><td>✅ Sangat Aktif</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>86.1% beredar</td><td>✅ Bagus</td></tr>
+    </table>
+    <div class="alert alert-warning"><strong>⚠️ Inflasi Netto:</strong> Emisi 196K HNT/hari vs Burn 109K. Inflasi 2x lipat dari burn. Risiko jika AT&amp;T mundur.</div>
+</div>
+
+<!-- APT -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>12. Aptos (APT) — Katalis Oktober</h3>
+    <p class="coin-meta">Harga: $0.80 · MCap: $735M · Suplai: 41.5% 🔴 (membaik Oktober)</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>7D: <strong>+16.38%</strong> · 30D: <strong>+51.68%</strong></td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>41.5% — NAMUN unlock VC berakhir Oktober 2026!</td><td>🔴→⚠️ Membaik</td></tr>
+        <tr><td><strong>Regulasi</strong></td><td>Komoditas digital (SEC/CFTC). Bitwise S-1 ETF filing.</td><td>✅ Institusional</td></tr>
+    </table>
+    <div class="alert alert-success"><strong>🟢 Katalis Oktober 2026:</strong> Siklus vesting 4 tahun VC berakhir. Tekanan unlock turun ~60%. R/R 1:4.5. Target: $1.50-$2.50.</div>
+</div>
+
+
+<!-- VIRTUAL -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>13. Virtual Protocol (VIRTUAL)</h3>
+    <p class="coin-meta">Harga: $0.685 &middot; MCap: $451M &middot; Sektor: AI / Agentic Economy</p>
+    <p class="section-title">Screening Fundamental</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>Korelasi</strong></td><td>Sangat berkorelasi dengan TAO & FET (Sektor AI).</td><td>✅ Relevan</td></tr>
+        <tr><td><strong>Inovasi (IAO)</strong></td><td>Initial Agent Offerings: Berinvestasi pada AI otonom yang bisa berbisnis.</td><td>✅ Outperform</td></tr>
+        <tr><td><strong>Valuasi</strong></td><td>Market Cap $451 Juta. Potensi 5x-10x jauh lebih realistis dibanding FET/TAO.</td><td>✅ Menarik</td></tr>
+    </table>
+    <p class="section-title">Level Teknikal</p>
+    <table>
+        <tr><th>Level</th><th>Harga</th><th>Catatan</th></tr>
+        <tr><td>Harga Sekarang</td><td>$0.82</td><td>(Data statis dari thesis)</td></tr>
+        <tr><td>Entry Ideal</td><td>$0.60-$0.70</td><td>Zona konsolidasi</td></tr>
+        <tr><td>SL</td><td>$0.48</td><td>Support di bawah $0.50</td></tr>
+        <tr><td>TP1 / TP2</td><td>$1.20 / $2.50</td><td>R/R 1:5.0</td></tr>
+    </table>
+    <div class="alert alert-warning"><strong>⚠️ Tunggu Koreksi:</strong> Harga ideal untuk masuk ada di zona $0.60-$0.70.</div>
+</div>
+
+<!-- GRAM -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>14. Telegram (GRAM)</h3>
+    <p class="coin-meta">Harga: $1.35 &middot; Sektor: L1 (Eks-Toncoin) &middot; Inflasi: 🔴 Net-Inflasioner</p>
+    <p class="section-title">Screening Fundamental</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>Ekosistem</strong></td><td>Integrasi "Gram Wallet" (fee-free) langsung ke ratusan juta pengguna Telegram.</td><td>✅ Sangat Kuat</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>Net-inflasioner. Reward staking dan insentif ekosistem menekan harga terus-menerus.</td><td>🔴 Bahaya Inflasi</td></tr>
+    </table>
+    <p class="section-title">Level Teknikal</p>
+    <table>
+        <tr><th>Level</th><th>Harga</th><th>Catatan</th></tr>
+        <tr><td>SL</td><td>$1.00</td><td>Zona pembatalan mutlak</td></tr>
+        <tr><td>TP1 / TP2</td><td>$1.90 / $2.60</td><td>R/R 1:3.6</td></tr>
+    </table>
+    <p class="note"><strong>Pola:</strong> Descending triangle. Entry saat breakout atau di support koreksi.</p>
+</div>
+
+
+<!-- HBAR -->
+<div class="coin-card">
+    <span class="tier-tag t1">Tier 1</span>
+    <h3>15. Hedera (HBAR) — ☪️ HALAL</h3>
+    <p class="coin-meta">Harga: $0.124 &middot; MCap: $5.4B &middot; Suplai: 87.7% &middot; Sektor: Enterprise L1 & RWA</p>
+    <p class="section-title">Screening Fundamental</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>Inovasi</strong></td><td>Governing Council (Google, IBM, Boeing). Standar emas untuk L1 perusahaan/enterprise.</td><td>✅ Sangat Aktif</td></tr>
+        <tr><td><strong>vs BTC</strong></td><td>30D: <strong>+63.9%</strong> vs +6.5%</td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>Circ/Max: <strong>87.7%</strong> (43.8B / 50B). Hampir bebas ancaman dump VC.</td><td>✅ Sangat Aman</td></tr>
+        <tr><td><strong>Utilitas</strong></td><td>Utility token untuk biaya jaringan, murni tanpa Riba/Judi. Diakui ShariaQuant.</td><td>✅ Halal Murni</td></tr>
+    </table>
+    <p class="section-title">Level Teknikal</p>
+    <table>
+        <tr><th>Level</th><th>Harga</th><th>Catatan</th></tr>
+        <tr><td>Harga Sekarang</td><td>$0.124</td><td>Sedang reli keras, JANGAN kejar harga.</td></tr>
+        <tr><td>Entry Ideal</td><td>$0.090 - $0.105</td><td>Tunggu koreksi / pullback sehat.</td></tr>
+        <tr><td>SL</td><td>$0.075</td><td>Invalidasi struktur naik (-25% dari entry).</td></tr>
+        <tr><td>TP1 / TP2</td><td>$0.180 / $0.250</td><td>Menuju titik psikologis (R/R 1:4.0).</td></tr>
+    </table>
+</div>
+
+<!-- ═══════════ TIER 2 COINS ═══════════ -->
+
+
+
+<h2 style="font-family:'Outfit',sans-serif; color:var(--tier2); margin-top:3rem; font-size:1.6rem; border-bottom:2px solid rgba(245,158,11,0.3); padding-bottom:0.5rem;">
+    🟡 TIER 2 — Kandidat Kuat (Lebih Spekulatif)
+</h2>
+
+<!-- ARB -->
+<div class="coin-card">
+    <span class="tier-tag t2">Tier 2</span>
+    <h3>1. Arbitrum (ARB) — 🏆 TOP PICK T2</h3>
+    <p class="coin-meta">Harga: $0.20 · MCap: $1.5B · Suplai: 67.9% · TVL: $2.14B</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>30D: <strong>+148.9%</strong></td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>TVL</strong></td><td>$2.14 Miliar — Terbesar di semua Ethereum L2</td><td>✅ Raja L2</td></tr>
+        <tr><td><strong>Revenue</strong></td><td>~$370K/hari dari Robinhood Chain (~$11M/bulan)</td><td>✅ Revenue Riil</td></tr>
+        <tr><td><strong>RWA</strong></td><td>7,000+ aset RWA ter-tokenisasi (&gt;$1 Miliar)</td><td>✅ Pemimpin RWA L2</td></tr>
+    </table>
+    <p class="note"><strong>Katalis:</strong> Robinhood Chain (Jul 2026), Priority Gas Auctions (Sep 2026), Upgrade Elara.</p>
+    <p class="note"><strong>Bear Case:</strong> Token ARB = governance saja. Revenue ke DAO Treasury, BUKAN ke pemegang langsung.</p>
+    <p class="note"><strong>R/R: 1:4 hingga 1:11.</strong> SL: $0.15. TP1: $0.50. TP2: $1.00.</p>
+</div>
+
+<!-- MINA -->
+<div class="coin-card">
+    <span class="tier-tag t2">Tier 2</span>
+    <h3>2. Mina Protocol (MINA) — 🏆 TOP PICK T2</h3>
+    <p class="coin-meta">Harga: $0.144 · MCap: $186M · Suplai: 100% ✅</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>30D: <strong>+127.5%</strong></td><td>✅ Outperform Masif</td></tr>
+        <tr><td><strong>Suplai</strong></td><td><strong>100%</strong> — Tidak ada VC, tidak ada unlock</td><td>✅ SEMPURNA</td></tr>
+        <tr><td><strong>Teknologi</strong></td><td>Blockchain teringan dunia (22 KB) — ZK-SNARKs rekursif</td><td>✅ Unik</td></tr>
+    </table>
+    <p class="note"><strong>Katalis:</strong> Upgrade Mesa (3 Sep 2026) — blok 2x lebih cepat, state fields 4x lebih banyak.</p>
+    <div class="alert alert-warning"><strong>⚠️ Bear Case:</strong> Ada sejak 2021, tapi BELUM ADA satu pun killer app. Tidak ada DEX besar atau DeFi hidup.</div>
+    <p class="note"><strong>R/R: 1:5.2 hingga 1:16.2.</strong> SL: $0.10. TP1: $0.35. TP2: $0.80.</p>
+</div>
+
+<!-- GRT -->
+<div class="coin-card">
+    <span class="tier-tag t2">Tier 2</span>
+    <h3>3. The Graph (GRT)</h3>
+    <p class="coin-meta">Harga: $0.031 · MCap: $307M · Suplai: 94.2%</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>30D: <strong>+65.4%</strong></td><td>✅ Outperform</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>94.2% beredar. NAMUN: <strong>Tidak ada max supply (inflasi abadi ~3%/thn)</strong></td><td>⚠️ Risiko</td></tr>
+        <tr><td><strong>Utilitas</strong></td><td>Monopoli indeks data Web3 (miliaran query/hari)</td><td>✅ Infrastruktur Kritis</td></tr>
+    </table>
+    <p class="note"><strong>Katalis:</strong> Migrasi desentralisasi (BNB &amp; Polygon) + x402 AI Agent (AI membayar data otomatis).</p>
+    <p class="note"><strong>R/R: 1:2.4 hingga 1:11.3.</strong> SL: $0.025. TP1: $0.06. TP2: $0.15. WAJIB staking.</p>
+</div>
+
+<!-- RUNE -->
+<div class="coin-card">
+    <span class="tier-tag t2">Tier 2</span>
+    <h3>4. THORChain (RUNE)</h3>
+    <p class="coin-meta">Harga: $0.74 · MCap: $251M · Suplai: 92.8% · Deflasioner Aktif</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>30D: <strong>+53.2%</strong></td><td>✅ Outperform</td></tr>
+        <tr><td><strong>Tokenomik</strong></td><td>Deflasioner aktif — fee swap dibakar, tidak ada pencetakan baru</td><td>✅ Terbaik</td></tr>
+    </table>
+    <div class="alert alert-danger"><strong>🔴 RED FLAGS — Sejarah Eksploitasi:</strong> Jan 2025: krisis $200M. Mei 2026: exploit $10.7M. Sep 2026: dana curian Bitget mengalir via THORChain.</div>
+    <p class="note"><strong>R/R: 1:3.7 hingga 1:11.1.</strong> SL: $0.55. TP1: $1.50. TP2: $3.00.</p>
+</div>
+
+<!-- TIA -->
+<div class="coin-card">
+    <span class="tier-tag t2">Tier 2</span>
+    <h3>5. Celestia (TIA)</h3>
+    <p class="coin-meta">Harga: $0.44 · MCap: $483M · Suplai: 82.7%</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>30D: <strong>+40.6%</strong></td><td>✅ Outperform</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>82.7% beredar</td><td>✅ Cukup Baik</td></tr>
+        <tr><td><strong>Narasi</strong></td><td>Raja Data Availability (DA) — krusial untuk L2 modular</td><td>✅ Terpanas</td></tr>
+    </table>
+    <p class="note"><strong>R/R: 1:4.7 hingga 1:16.7.</strong> SL: $0.35. TP1: $1.20. TP2: $3.00. Spekulatif.</p>
+</div>
+
+<!-- OP -->
+<div class="coin-card">
+    <span class="tier-tag t2">Tier 2</span>
+    <h3>6. Optimism (OP)</h3>
+    <p class="coin-meta">Harga: $0.134 · MCap: $330M · Suplai: 53.5% ⚠️</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>30D: <strong>+55.9%</strong></td><td>✅ Outperform</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>53.5% — Pas-pasan di batas minimum</td><td>⚠️ Marginal</td></tr>
+        <tr><td><strong>Ekosistem</strong></td><td>Coinbase (Base) &amp; Superchain</td><td>✅ Institusional</td></tr>
+    </table>
+    <p class="note"><strong>ARB lebih disarankan</strong> di sektor L2. R/R: 1:3.3 hingga 1:11.8. SL: $0.10.</p>
+</div>
+
+<!-- ZK -->
+<div class="coin-card">
+    <span class="tier-tag t2">Tier 2</span>
+    <h3>7. zkSync (ZK)</h3>
+    <p class="coin-meta">Harga: $0.012 · MCap: $140M · Suplai: 51.5% ⚠️</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>30D: <strong>+54.9%</strong></td><td>✅ Outperform</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>51.5% — Tepat di batas minimum</td><td>⚠️ Marginal</td></tr>
+    </table>
+    <p class="note"><strong>Spekulatif.</strong> Beli hanya jika percaya zkSync Era akan bangkit. R/R: 1:4.2 hingga 1:11.6. SL: $0.009.</p>
+</div>
+
+<!-- W -->
+<div class="coin-card">
+    <span class="tier-tag t2">Tier 2</span>
+    <h3>8. Wormhole (W)</h3>
+    <p class="coin-meta">Harga: $0.013 · MCap: $93M · Suplai: 65.3%</p>
+    <table>
+        <tr><th style="width:25%">Kriteria</th><th>Data</th><th style="width:18%">Verdict</th></tr>
+        <tr><td><strong>vs BTC</strong></td><td>30D: <strong>+54.5%</strong></td><td>✅ Outperform</td></tr>
+        <tr><td><strong>Suplai</strong></td><td>65.3%</td><td>✅ Cukup</td></tr>
+        <tr><td><strong>Sentimen</strong></td><td>Infrastruktur bridge krusial, tapi sentimen token lemah</td><td>⚠️ Lemah</td></tr>
+    </table>
+    <p class="note"><strong>Spekulatif.</strong> SL sangat jauh (-40%). R/R: 1:2.5 hingga 1:9.2. SL: $0.009.</p>
+</div>
+
+</div><!-- end tab-all -->
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--                      TAB: TIER 1 ONLY                         -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-tier1" class="tab-content">
+    <p class="note" style="text-align:center; padding:3rem; font-size:1.1rem;">
+        Klik tab <strong>"Semua"</strong> untuk melihat detail lengkap setiap koin.<br>
+        Tab ini menampilkan ringkasan Tier 1 saja.
+    </p>
+    <div class="summary-grid">
+        <div class="summary-card"><div class="name">🏆 SOL — $118.46</div><div class="detail">MCap $72.2B · Suplai 92.6% · TVL $6.73B · SL $70 · TP $260 · <span class="rr">R/R 1:2.7</span></div></div>
+        <div class="summary-card"><div class="name">🏆 ZEC — $1,528</div><div class="detail">MCap $28B · Suplai 80.7% · Halal · SL $900 · TP $4,000 · <span class="rr">R/R 1:3.5</span></div></div>
+        <div class="summary-card"><div class="name">🏆 NEAR — $4.27</div><div class="detail">MCap $6.7B · Suplai 100% · 🔴 JANGAN BELI. Entry: $2.80-$3.50</div></div>
+        <div class="summary-card" style="border-color:rgba(16,185,129,0.4)"><div class="name">🏆 QNT — $220.49 ☪️</div><div class="detail">MCap $3.5B · Suplai 99.5% · Halal · 🔴 TUNGGU $150-$180. <span class="rr">R/R 1:5.6</span></div></div>
+        <div class="summary-card"><div class="name">SUI — $1.15</div><div class="detail">MCap $5.1B · Suplai 41% 🔴 · SL $0.95 · TP $2.50 · <span class="rr">R/R 1:3.9</span></div></div>
+        <div class="summary-card"><div class="name">LINK — $14.36</div><div class="detail">MCap $10.6B · Suplai 74.8% · RWA · Entry: $8-$9 · <span class="rr">R/R 1:10.5</span></div></div>
+        <div class="summary-card"><div class="name">AERO — $0.78</div><div class="detail">MCap $839M · Inflasi 10.9% · SL $0.45 · Entry: $0.55-$0.65 · <span class="rr">R/R 1:1.4</span></div></div>
+        <div class="summary-card"><div class="name">KAS — $0.046</div><div class="detail">MCap $1.3B · Suplai 96.6% · Ekosistem KOSONG · <span style="color:var(--red)">Bearish 70-75%</span></div></div>
+        <div class="summary-card"><div class="name">AR — $4.27</div><div class="detail">MCap $315M · Suplai 99.5% · 🔴 RSI 81 OVERBOUGHT. Tunggu koreksi.</div></div>
+        <div class="summary-card"><div class="name">TAO — $299 ☪️</div><div class="detail">MCap $3.7B · Revenue $35M · Halal (MUI) · SL $185 · <span class="rr">R/R 1:2.0</span></div></div>
+        <div class="summary-card"><div class="name">HNT — $0.47</div><div class="detail">MCap $86M · P/S 4.7x · Deep Value · SL $0.25 · <span class="rr">R/R 1:4.0</span></div></div>
+        <div class="summary-card"><div class="name">APT — $0.80</div><div class="detail">MCap $735M · Katalis Oktober · SL $0.50 · TP $2.50 · <span class="rr">R/R 1:4.5</span></div></div>
+        <div class="summary-card"><div class="name">VIRTUAL — $0.78</div><div class="detail">Sektor AI · SL $0.48 · TP $2.50 · <span class="rr">R/R 1:5.0</span></div></div>
+        <div class="summary-card"><div class="name">GRAM — $1.35</div></div>
+        <div class="summary-card"><div class="name">HBAR — $0.124 ☪️</div><div class="detail">Enterprise L1 · Suplai 87.7% · SL $0.075 · TP $0.250 · <span class="rr">R/R 1:4.0</span></div></div>
+<div class="detail">Sektor L1 · SL $1.00 · TP $2.60 · <span class="rr">R/R 1:3.6</span></div></div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--                      TAB: TIER 2 ONLY                         -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-tier2" class="tab-content">
+    <p class="note" style="text-align:center; padding:3rem; font-size:1.1rem;">
+        Klik tab <strong>"Semua"</strong> untuk melihat detail lengkap setiap koin.<br>
+        Tab ini menampilkan ringkasan Tier 2 saja.
+    </p>
+    <div class="alert alert-warning" style="margin-bottom:1.5rem"><strong>⚠️ Koin Tier 2 lebih berisiko dari Tier 1.</strong> Ukuran posisi maksimal 3-5% portofolio per aset.</div>
+    <div class="summary-grid">
+        <div class="summary-card"><div class="name">XRP — $1.49 ☪️</div><div class="detail">Katalis BlackRock · SL $0.95 · TP $2.50 · <span class="rr">R/R 1:3.3</span></div></div>
+        <div class="summary-card"><div class="name">FET — $0.243</div><div class="detail">Raja AI (ASI) · SL $0.12 · TP $0.40 · <span class="rr">R/R 1:3.6</span></div></div>
+        <div class="summary-card"><div class="name">🏆 ARB — $0.20</div><div class="detail">MCap $1.5B · TVL $2.14B · Revenue $11M/bln · SL $0.15 · TP $1.00 · <span class="rr">R/R 1:11</span></div></div>
+        <div class="summary-card"><div class="name">🏆 MINA — $0.144</div><div class="detail">MCap $186M · Suplai 100% · ZK-SNARKs · SL $0.10 · TP $0.80 · <span class="rr">R/R 1:14</span></div></div>
+        <div class="summary-card"><div class="name">GRT — $0.031</div><div class="detail">MCap $307M · Suplai 94.2% · Inflasi ∞ · SL $0.025 · TP $0.15 · <span class="rr">R/R 1:11.3</span></div></div>
+        <div class="summary-card"><div class="name">RUNE — $0.74</div><div class="detail">MCap $251M · Deflasioner · 🔴 Riwayat exploit · SL $0.55 · <span class="rr">R/R 1:11.1</span></div></div>
+        <div class="summary-card"><div class="name">TIA — $0.44</div><div class="detail">MCap $483M · DA Layer · Spekulatif · SL $0.35 · TP $3.00 · <span class="rr">R/R 1:16.7</span></div></div>
+        <div class="summary-card"><div class="name">OP — $0.134</div><div class="detail">MCap $330M · Suplai 53.5% ⚠️ · ARB lebih baik · SL $0.10 · <span class="rr">R/R 1:11.8</span></div></div>
+        <div class="summary-card"><div class="name">ZK — $0.012</div><div class="detail">MCap $140M · Suplai 51.5% ⚠️ · Spekulatif · SL $0.009 · <span class="rr">R/R 1:11.6</span></div></div>
+        <div class="summary-card"><div class="name">W — $0.013</div><div class="detail">MCap $93M · Suplai 65.3% · Sentimen lemah · SL $0.009 · <span class="rr">R/R 1:9.2</span></div></div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--                     TAB: MASTER R/R TABLE                      -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-master" class="tab-content">
+
+<h2 style="font-family:'Outfit',sans-serif; color:var(--text-bright); margin-top:1rem; font-size:1.5rem;">💰 Tabel Risk/Reward Gabungan — Semua Tier</h2>
+
+<!-- BTC STATUS BANNER -->
+<div style="background:linear-gradient(90deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05)); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:0.8rem 1.2rem; margin-bottom:0.8rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+<div style="font-size:1.5rem;">₿</div>
+<div>
+<div style="color:#10b981; font-weight:700; font-size:0.95rem;">STATUS BTC: 🟢 AMAN</div>
+<div style="color:var(--text-dim); font-size:0.82rem;">Funding Rate BTC: 0.0012% - 0.0056% (sangat rendah, tidak ada ancaman dump). Update: 29 Sep 2026 06:42 WIB</div>
+</div>
+</div>
+<button id="btn-refresh-fr" onclick="fetchFundingRates()" style="margin-bottom:1rem; background:linear-gradient(135deg, #3b82f6, #10b981); color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:0.95rem; transition:all 0.3s ease; box-shadow:0 2px 8px rgba(59,130,246,0.3);">📡 Ambil Live Funding Rate (Binance API — GRATIS!)</button>
+<p id="api-status" style="color:var(--text-dim); font-size:0.9rem;"></p>
+
+<div class="alert alert-important"><strong>Cara Baca:</strong> Kolom Tier menunjukkan asal koin. R/R dihitung dari harga entry ke TP2 vs ke SL. Koin diurutkan berdasarkan R/R terbaik.</div>
+
+<!-- FUNDING RATE GUIDE -->
+<div style="background:linear-gradient(135deg, rgba(16,185,129,0.08), rgba(59,130,246,0.08)); border:1px solid rgba(16,185,129,0.25); border-radius:12px; padding:1.2rem 1.5rem; margin-bottom:1.5rem;">
+<h3 style="font-family:'Outfit',sans-serif; color:#10b981; margin:0 0 1rem 0; font-size:1.15rem;">📡 Panduan Cepat: Membaca Funding Rate di Coinglass</h3>
+<p style="color:var(--text-dim); font-size:0.92rem; margin-bottom:1rem;">Buka <a href="https://www.coinglass.com/FundingRate" target="_blank" style="color:#60a5fa; text-decoration:underline;">coinglass.com/FundingRate</a> → Cari koin target → Baca angka Funding Rate → Cocokkan dengan sinyal di bawah:</p>
+
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:0.8rem;">
+
+<div style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:8px; padding:1rem;">
+<div style="font-weight:700; color:#10b981; font-size:1rem; margin-bottom:0.5rem;">🟢 SINYAL BELI SUPER KUAT</div>
+<div style="color:var(--text-dim); font-size:0.85rem;">
+<strong>Kondisi:</strong> Funding Rate <strong>MINUS / NEGATIF</strong> (hijau tebal, contoh: -0.03% s/d -0.10%)<br>
+<strong>Artinya:</strong> Pasar terlalu banyak Short → Bandar akan PUMP harga ke atas<br>
+<strong>Bukti:</strong> BTC April 2026: 46 hari FR negatif → rally 15% ($74K→$86K)<br>
+<strong>Aksi:</strong> <span style="color:#10b981; font-weight:700;">BELI / NYALAKAN BOT!</span>
+</div>
+</div>
+
+<div style="background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.3); border-radius:8px; padding:1rem;">
+<div style="font-weight:700; color:#60a5fa; font-size:1rem; margin-bottom:0.5rem;">🔵 SINYAL BELI AMAN</div>
+<div style="color:var(--text-dim); font-size:0.85rem;">
+<strong>Kondisi:</strong> Funding Rate <strong>NORMAL</strong> (putih, 0.0050% - 0.0100%)<br>
+<strong>Artinya:</strong> Pasar bersih, tidak ada leverage berlebihan<br>
+<strong>Bukti:</strong> BTC saat ini (0.0036%) → Aman untuk altcoin<br>
+<strong>Aksi:</strong> <span style="color:#60a5fa; font-weight:700;">Pasang jaring di Entry Ideal</span>
+</div>
+</div>
+
+<div style="background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); border-radius:8px; padding:1rem;">
+<div style="font-weight:700; color:#ef4444; font-size:1rem; margin-bottom:0.5rem;">🔴 SINYAL JANGAN BELI</div>
+<div style="color:var(--text-dim); font-size:0.85rem;">
+<strong>Kondisi:</strong> Funding Rate <strong>SANGAT TINGGI</strong> (merah, > 0.05%)<br>
+<strong>Artinya:</strong> Terlalu banyak Long FOMO → Bandar akan DUMP harga<br>
+<strong>Bukti:</strong> GRAM 26 Sep: FR 0.08% → harga longsor dari $1.70 ke $1.57<br>
+<strong>Aksi:</strong> <span style="color:#ef4444; font-weight:700;">MATIKAN BOT, TIARAP 100% CASH!</span>
+</div>
+</div>
+
+</div>
+
+<div style="margin-top:1rem; padding:0.8rem; background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.2); border-radius:8px;">
+<div style="color:#fbbf24; font-weight:700; font-size:0.9rem;">⚡ CHECKLIST SEBELUM NYALAKAN BOT:</div>
+<div style="color:var(--text-dim); font-size:0.85rem; margin-top:0.4rem;">
+① Cek FR <strong>BTC</strong> dulu (harus ≤ 0.01%) &nbsp;→&nbsp;
+② Cek FR <strong>Koin Target</strong> (idealnya negatif/rendah) &nbsp;→&nbsp;
+③ Harga di <strong>Zona Entry Ideal</strong> (tabel di bawah) &nbsp;→&nbsp;
+④ On-Chain <strong>bukan 🔴</strong> &nbsp;→&nbsp;
+⑤ <strong>BELI!</strong>
+</div>
+</div>
+</div>
+
+<div class="master-table-wrap">
+<table class="master-table">
+    <tr>
+        <th>Tier</th><th>Koin</th><th>Entry</th><th>SL</th><th>% SL</th><th>TP 1</th><th>TP 2</th><th>R/R</th><th>Data On-Chain</th><th>Sinyal FR</th><th>Aksi</th>
+    </tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>VIRTUAL</strong></td><td>$0.60-$0.70</td><td>$0.48</td><td>-41%</td><td>$1.20</td><td>$2.50</td><td><strong>1:5.0</strong></td><td><span class="pill" style="background:rgba(255,255,255,0.1); color:#cbd5e1;">➖ Netral</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Tunggu koreksi</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>GRAM</strong></td><td>$1.15 / $1.55</td><td>$1.00</td><td>-26%</td><td>$1.90</td><td>$2.60</td><td><strong>1:3.6</strong></td><td><span class="pill" style="background:rgba(255,255,255,0.1); color:#cbd5e1;">➖ Netral</span></td><td><span class="pill" style="background:rgba(251,191,36,0.15); color:#fbbf24;">⚠️ Baru Reset</span></td><td><span class="pill pill-wait">Netral</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>HBAR</strong> ☪️</td><td>$0.090-$0.105</td><td>$0.075</td><td>-25%</td><td>$0.180</td><td>$0.250</td><td><strong>1:4.0</strong></td><td><span class="pill pill-t1">✅ Aman</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Tunggu koreksi</span></td></tr>
+        <tr class="t2-row"><td><span class="pill pill-t2">T2</span></td><td><strong>FET</strong></td><td>$0.15-$0.18</td><td>$0.12</td><td>-25%</td><td>$0.28</td><td>$0.40</td><td><strong>1:3.6</strong></td><td><span class="pill pill-wait">⚠️ Regulasi AI</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Spekulatif</span></td></tr>
+<tr class="t2-row"><td><span class="pill pill-t2">T2</span></td><td><strong>XRP</strong> ☪️</td><td>$1.10-$1.25</td><td>$0.95</td><td>-15%</td><td>$1.90</td><td>$2.50</td><td><strong>1:3.3</strong></td><td><span class="pill pill-t1">✅ Aman</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Tunggu koreksi</span></td></tr>
+<tr class="t2-row"><td><span class="pill pill-t2">T2</span></td><td><strong>TIA</strong></td><td>$0.40-$0.45</td><td>$0.35</td><td>-30%</td><td>$1.20</td><td>$3.00</td><td><strong>1:16.7</strong></td><td><span class="pill pill-wait">⚠️ Unlock</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Spekulatif</span></td></tr>
+    <tr class="t2-row"><td><span class="pill pill-t2">T2</span></td><td><strong>MINA</strong></td><td>$0.11-$0.13</td><td>$0.10</td><td>-32%</td><td>$0.35</td><td>$0.80</td><td><strong>1:14</strong></td><td><span class="pill pill-t1">✅ Aman</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-buy">🟢 Layak</span></td></tr>
+    <tr class="t2-row"><td><span class="pill pill-t2">T2</span></td><td><strong>OP</strong></td><td>$0.11-$0.13</td><td>$0.10</td><td>-32%</td><td>$0.30</td><td>$0.70</td><td><strong>1:11.8</strong></td><td><span class="pill pill-wait">⚠️ Unlock</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Netral</span></td></tr>
+    <tr class="t2-row"><td><span class="pill pill-t2">T2</span></td><td><strong>ZK</strong></td><td>$0.010-$0.012</td><td>$0.009</td><td>-31%</td><td>$0.03</td><td>$0.06</td><td><strong>1:11.6</strong></td><td><span class="pill pill-no">🔴 BOM WAKTU</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Spekulatif</span></td></tr>
+    <tr class="t2-row"><td><span class="pill pill-t2">T2</span></td><td><strong>GRT</strong></td><td>$0.028-$0.032</td><td>$0.025</td><td>-29%</td><td>$0.06</td><td>$0.15</td><td><strong>1:11.3</strong></td><td><span class="pill pill-t1">✅ Aman</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-buy">🟢 Layak</span></td></tr>
+    <tr class="t2-row"><td><span class="pill pill-t2">T2</span></td><td><strong>RUNE</strong></td><td>$0.60-$0.65</td><td>$0.55</td><td>-27%</td><td>$1.50</td><td>$3.00</td><td><strong>1:11.1</strong></td><td><span class="pill pill-t1">✅ Aman</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-buy">🟢 Layak</span></td></tr>
+    <tr class="t2-row"><td><span class="pill pill-t2">T2</span></td><td><strong>ARB</strong></td><td>$0.20-$0.22</td><td>$0.15</td><td>-32%</td><td>$0.50</td><td>$1.00</td><td><strong>1:11</strong></td><td><span class="pill pill-wait">⚠️ Unlock</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-buy">🟢 Layak</span></td></tr>
+    <tr class="t2-row"><td><span class="pill pill-t2">T2</span></td><td><strong>W</strong></td><td>$0.010-$0.012</td><td>$0.009</td><td>-40%</td><td>$0.03</td><td>$0.07</td><td><strong>1:9.2</strong></td><td><span class="pill pill-no">🔴 Bahaya</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Spekulatif</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>QNT</strong> ☪️</td><td>$150-$180</td><td>$120</td><td>-20%~-33%</td><td>$300</td><td>$420</td><td><strong>1:5.6</strong></td><td><span class="pill pill-t1">✅ Aman</span></td><td><span class="pill" style="background:rgba(16,185,129,0.2); color:#10b981;">🟢 SHORT SQUEEZE!</span></td><td><span class="pill pill-no">🔴 Tunggu</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>APT</strong></td><td>$0.70-$0.75</td><td>$0.50</td><td>-42%</td><td>$1.50</td><td>$2.50</td><td><strong>1:4.5</strong></td><td><span class="pill pill-t1">✅ Unlock Habis</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-buy">🟢 R/R Bagus</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>HNT</strong></td><td>$0.35-$0.40</td><td>$0.25</td><td>-50%</td><td>$1.00</td><td>$1.50</td><td><strong>1:4.0</strong></td><td><span class="pill pill-t1">✅ Aman</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-buy">🟢 Deep Value</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>SUI</strong></td><td>$1.05-$1.10</td><td>$0.95</td><td>-25%</td><td>$1.50</td><td>$2.50</td><td><strong>1:3.9</strong></td><td><span class="pill pill-no">🔴 Lev/Unlock</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Beli koreksi</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>ZEC</strong></td><td>$1,100-$1,200</td><td>$900</td><td>-43%</td><td>$2,500</td><td>$4,000</td><td><strong>1:3.5</strong></td><td><span class="pill pill-t1">✅ Paling Aman</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Beli koreksi</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>AR</strong></td><td>Tunggu RSI</td><td>$1.50</td><td>-68%</td><td>$10.00</td><td>$15.00</td><td><strong>1:3.2</strong></td><td><span class="pill pill-no">🔴 Overheated</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-no">🔴 Overbought</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>KAS</strong></td><td>$0.035-$0.040</td><td>$0.025</td><td>-47%</td><td>$0.08</td><td>$0.12</td><td><strong>1:3.2</strong></td><td><span class="pill pill-t1">✅ Aman</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">High Risk</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>SOL</strong></td><td>$97-$105</td><td>$70</td><td>-42%</td><td>$180</td><td>$260</td><td><strong>1:2.7</strong></td><td><span class="pill pill-t1">✅ Aman</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Beli bertahap</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>LINK</strong></td><td>$8-$9</td><td>$6.50</td><td>-53%</td><td>$20</td><td>$30</td><td><strong>1:2.2</strong></td><td><span class="pill pill-t1">✅ Aman</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Beli koreksi</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>TAO</strong> ☪️</td><td>$220-$250</td><td>$185</td><td>-43%</td><td>$450</td><td>$600</td><td><strong>1:2.0</strong></td><td><span class="pill pill-wait">⚠️ Lev Tinggi</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Beli bertahap</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>NEAR</strong></td><td>$2.80-$3.50</td><td>$2.00</td><td>-63%</td><td>$7.00</td><td>$12.00</td><td><strong>1:1.9</strong></td><td><span class="pill pill-no">🔴 Lev Ekstrem</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-no">🔴 Jangan Beli</span></td></tr>
+    <tr class="t1-row"><td><span class="pill pill-t1">T1</span></td><td><strong>AERO</strong></td><td>$0.55-$0.65</td><td>$0.45</td><td>-46%</td><td>$1.10</td><td>$1.40</td><td><strong>1:1.4</strong></td><td><span class="pill pill-wait">⚠️ Inflasi</span></td><td><span class="pill" style="background:rgba(59,130,246,0.15); color:#60a5fa;">🔵 Normal</span></td><td><span class="pill pill-wait">Beli koreksi</span></td></tr>
+</table>
+</div>
+
+</div><!-- end tab-master -->
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--                      TAB: REMOVED                              -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-removed" class="tab-content">
+
+<h2 style="font-family:'Outfit',sans-serif; color:var(--red); margin-top:1rem; font-size:1.5rem;">🚫 Koin yang Dibuang</h2>
+
+<h3 style="font-family:'Outfit',sans-serif; color:#fca5a5; font-size:1.1rem; margin-top:2rem; background:var(--red-glow); padding:10px 15px; border-radius:8px; border-left:4px solid var(--red);">
+    ☪️ Dibuang Karena Alasan Syariah (Haram / Syubhat)
+</h3>
+<div class="haram-list">
+    <div class="haram-item"><strong>HYPE (Hyperliquid)</strong><div class="reason">🔴 Perpetual Futures DEX — Maysir &amp; Riba (Leverage, Funding Rate)</div></div>
+    <div class="haram-item"><strong>JUP (Jupiter)</strong><div class="reason">🔴 JUP Perps — Perdagangan Perpetual dengan Leverage</div></div>
+    <div class="haram-item"><strong>RAY (Raydium)</strong><div class="reason">🔴 Fasilitator utama perjudian memecoin — "Kasino on-chain"</div></div>
+    <div class="haram-item"><strong>OGN (Origin Protocol)</strong><div class="reason">🔴 Pendapatan dari Yield Lending stablecoin (OUSD) — Riba</div></div>
+</div>
+
+<h3 style="font-family:'Outfit',sans-serif; color:#94a3b8; font-size:1.1rem; margin-top:2rem; background:rgba(255,255,255,0.03); padding:10px 15px; border-radius:8px; border-left:4px solid #64748b;">
+    Dibuang Dari Screening Sebelumnya (Fundamental Lemah)
+</h3>
+<p class="note">SEI, AI, IO, PYTH, POLYX — Ditandai merah di indikator Bot Radar.</p>
+<p class="note">FET — Dinaikkan status menjadi ⚠️ Spekulatif (suplai 85.2%, tapi tanpa revenue riil).</p>
+
+<h3 style="font-family:'Outfit',sans-serif; color:var(--red); font-size:1.1rem; margin-top:2rem; background:var(--red-glow); padding:10px 15px; border-radius:8px; border-left:4px solid var(--red);">
+    Tier 2 — Koin Beracun (Suplai &lt;50%)
+</h3>
+<div class="haram-list">
+    <div class="haram-item"><strong>ZRO (LayerZero)</strong><div class="reason">Hanya 35.3% suplai beredar</div></div>
+    <div class="haram-item"><strong>TWT (Trust Wallet)</strong><div class="reason">Hanya 41.7% beredar</div></div>
+    <div class="haram-item"><strong>ENS</strong><div class="reason">Hanya 42.2% beredar</div></div>
+    <div class="haram-item"><strong>IMX (Immutable X)</strong><div class="reason">Hanya 44.0% beredar</div></div>
+    <div class="haram-item"><strong>MANTA</strong><div class="reason">Hanya 48.2% beredar</div></div>
+    <div class="haram-item"><strong>CRO (Crypto.com)</strong><div class="reason">Hanya 49.7% beredar</div></div>
+</div>
+
+<h3 style="font-family:'Outfit',sans-serif; color:var(--yellow); font-size:1.1rem; margin-top:2rem; background:var(--yellow-glow); padding:10px 15px; border-radius:8px; border-left:4px solid var(--yellow);">
+    Tier 2 — Koin Dinosaurus (Lambat &amp; Underperform BTC)
+</h3>
+<p class="note">TRX (-2.2%) · XRP (+7.6%) · ADA (+23.1%) · XLM (+17.8%) · ATOM (+23.7%) · DOT (+42.5%)</p>
+
+</div><!-- end tab-removed -->
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--                      TAB: DATA RISIKO                          -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-risiko" class="tab-content">
+<h1>📊 DATA RISIKO LANJUTAN — Holder Concentration, Unlock Calendar, Funding Rate</h1>
+<p><em>(Dikompilasi: 28 September 2026 | Sumber: Coinglass, Tokenomist/TokenUnlocks, Arkham, Etherscan, Solscan)</em></p>
+<div class="alert alert-important"><strong>🚨 PENTING:</strong>
+Dokumen ini adalah <strong>suplemen risiko</strong> untuk <code>Rangkuman_Screening_Tier1.md</code> dan <code>Rangkuman_Screening_Tier2.md</code>. Data ini menjawab tiga kelemahan terbesar screening sebelumnya: (1) Siapa yang memegang koin, (2) Kapan token baru membanjiri pasar, (3) Apakah reli didorong leverage.</div>
+<hr>
+<h2>1. 📅 Kalender Unlock Oktober 2026 (KRITIS)</h2>
+<div class="alert alert-warning"><strong>⚠️ PERINGATAN:</strong>
+Koin yang memiliki unlock besar di bulan depan berisiko mengalami <strong>tekanan jual struktural</strong>. Masuk sebelum tanggal unlock = potensi menjadi exit liquidity bagi VC/tim.</div>
+<table>
+<thead>
+<tr>
+<th align="left">Koin</th>
+<th align="left">Tier</th>
+<th align="left">Tgl Unlock</th>
+<th align="left">Jumlah Token</th>
+<th align="left">Est. % Circ Supply</th>
+<th align="left">Tipe</th>
+<th align="left">Dampak</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>SUI</strong></td>
+<td align="left">T1</td>
+<td align="left">1 Okt 2026</td>
+<td align="left">~64.2M SUI</td>
+<td align="left">~1.5%</td>
+<td align="left">Linear (bulanan)</td>
+<td align="left">⚠️ Rutin tapi terus menekan harga</td>
+</tr>
+<tr>
+<td align="left"><strong>APT</strong></td>
+<td align="left">T1</td>
+<td align="left">12 Okt 2026</td>
+<td align="left">~11.3M-14.4M APT</td>
+<td align="left">~1.5-1.9%</td>
+<td align="left">Linear (bulanan)</td>
+<td align="left">✅ <strong>KATALIS:</strong> Ini salah satu unlock TERAKHIR VC. Setelah Oktober, tekanan turun ~60%</td>
+</tr>
+<tr>
+<td align="left"><strong>ARB</strong></td>
+<td align="left">T2</td>
+<td align="left">16 Okt 2026</td>
+<td align="left">~92.7M ARB</td>
+<td align="left">~1.4%</td>
+<td align="left">Linear (bulanan)</td>
+<td align="left">⚠️ Unlock besar rutin. ~230M ARB sudah unlock di Sep 2026</td>
+</tr>
+<tr>
+<td align="left"><strong>ZK</strong></td>
+<td align="left">T2</td>
+<td align="left">16-17 Okt 2026</td>
+<td align="left">~170.4M-173.1M ZK</td>
+<td align="left">~2.6%</td>
+<td align="left">Linear</td>
+<td align="left">🔴 Sangat besar relatif terhadap MCap $140M. Tekanan jual tinggi</td>
+</tr>
+<tr>
+<td align="left"><strong>TIA</strong></td>
+<td align="left">T2</td>
+<td align="left">30-31 Okt 2026</td>
+<td align="left">~17.34M TIA</td>
+<td align="left">~1.3%</td>
+<td align="left">Linear</td>
+<td align="left">⚠️ Moderat</td>
+</tr>
+<tr>
+<td align="left"><strong>OP</strong></td>
+<td align="left">T2</td>
+<td align="left">30 Okt 2026</td>
+<td align="left">~31.34M OP</td>
+<td align="left">~1.3%</td>
+<td align="left">Linear</td>
+<td align="left">⚠️ Moderat</td>
+</tr>
+<tr>
+<td align="left"><strong>W</strong></td>
+<td align="left">T2</td>
+<td align="left">Okt 2026</td>
+<td align="left">TBD</td>
+<td align="left">~1-2%</td>
+<td align="left">Linear</td>
+<td align="left">⚠️ Data kurang presisi</td>
+</tr>
+</tbody></table>
+<h3>Koin TANPA Unlock (Aman dari Dilusi):</h3>
+<table>
+<thead>
+<tr>
+<th align="left">Koin</th>
+<th align="left">Tier</th>
+<th align="left">Suplai Beredar</th>
+<th align="left">Alasan Aman</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>ZEC</strong></td>
+<td align="left">T1</td>
+<td align="left">80.7%</td>
+<td align="left">PoW murni — suplai baru hanya dari mining, sudah halving</td>
+</tr>
+<tr>
+<td align="left"><strong>HBAR</strong></td>
+<td align="left">T1</td>
+<td align="left">87.7%</td>
+<td align="left">Rilis token dikontrol komite, aman dari VC dump</td>
+</tr>
+<tr>
+<td align="left"><strong>NEAR</strong></td>
+<td align="left">T1</td>
+<td align="left">100%</td>
+<td align="left">Seluruh suplai sudah beredar</td>
+</tr>
+<tr>
+<td align="left"><strong>QNT</strong></td>
+<td align="left">T1</td>
+<td align="left">99.5%</td>
+<td align="left">Hanya 14.6M token, hampir habis</td>
+</tr>
+<tr>
+<td align="left"><strong>KAS</strong></td>
+<td align="left">T1</td>
+<td align="left">96.6%</td>
+<td align="left">PoW — suplai dari mining, mendekati habis</td>
+</tr>
+<tr>
+<td align="left"><strong>AR</strong></td>
+<td align="left">T1</td>
+<td align="left">99.5%</td>
+<td align="left">Suplai habis</td>
+</tr>
+<tr>
+<td align="left"><strong>MINA</strong></td>
+<td align="left">T2</td>
+<td align="left">100%</td>
+<td align="left">Seluruh suplai beredar</td>
+</tr>
+<tr>
+<td align="left"><strong>SOL</strong></td>
+<td align="left">T1</td>
+<td align="left">92.6%</td>
+<td align="left">Tidak ada cliff unlock signifikan, staking inflation ~5%</td>
+</tr>
+<tr>
+<td align="left"><strong>LINK</strong></td>
+<td align="left">T1</td>
+<td align="left">74.8%</td>
+<td align="left">Tidak ada jadwal unlock publik terstruktur. Tim menjual secara bertahap</td>
+</tr>
+<tr>
+<td align="left"><strong>HNT</strong></td>
+<td align="left">T1</td>
+<td align="left">86.1%</td>
+<td align="left">Emisi via mining, bukan unlock VC</td>
+</tr>
+<tr>
+<td align="left"><strong>RUNE</strong></td>
+<td align="left">T2</td>
+<td align="left">92.8%</td>
+<td align="left">Deflasioner aktif — fee dibakar</td>
+</tr>
+<tr>
+<td align="left"><strong>GRT</strong></td>
+<td align="left">T2</td>
+<td align="left">94.2%</td>
+<td align="left">Inflasi 3%/thn tapi tanpa cliff unlock VC</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>2. 🐋 Distribusi Kepemilikan (Holder Concentration)</h2>
+<div class="alert alert-important"><strong>🚨 PENTING:</strong>
+Data ini menunjukkan seberapa &quot;terkonsentrasi&quot; kepemilikan token. Semakin tinggi konsentrasi pada sedikit wallet, semakin tinggi risiko <strong>whale dump</strong>. Data bersifat estimasi berdasarkan on-chain analytics dan laporan publik.</div>
+<table>
+<thead>
+<tr>
+<th align="left">Koin</th>
+<th align="left">Tier</th>
+<th align="left">Top 10 Holder % (est.)</th>
+<th align="left">Kategori Risiko</th>
+<th align="left">Catatan</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>SOL</strong></td>
+<td align="left">T1</td>
+<td align="left">~48%</td>
+<td align="left">⚠️ Sedang</td>
+<td align="left">Sebagian besar di staking validator &amp; exchange. Distribusi relatif merata untuk L1 besar</td>
+</tr>
+<tr>
+<td align="left"><strong>ZEC</strong></td>
+<td align="left">T1</td>
+<td align="left">~25%</td>
+<td align="left">✅ Rendah</td>
+<td align="left">PoW = distribusi via mining. Tidak ada VC besar yang mendominasi</td>
+</tr>
+<tr>
+<td align="left"><strong>HBAR</strong></td>
+<td align="left">T1</td>
+<td align="left">~25%</td>
+<td align="left">✅ Rendah</td>
+<td align="left">Dikelola Treasury (Governing Council enterprise), distribusi sehat</td>
+</tr>
+<tr>
+<td align="left"><strong>NEAR</strong></td>
+<td align="left">T1</td>
+<td align="left">~35%</td>
+<td align="left">⚠️ Sedang</td>
+<td align="left">Foundation &amp; early investors masih pegang porsi signifikan, tapi suplai 100% beredar</td>
+</tr>
+<tr>
+<td align="left"><strong>QNT</strong></td>
+<td align="left">T1</td>
+<td align="left">~70%</td>
+<td align="left">🔴 Tinggi</td>
+<td align="left"><strong>PERINGATAN:</strong> Suplai sangat kecil (14.6M token). Top holder sangat dominan. Tim Quant Network + early adopter menguasai mayoritas</td>
+</tr>
+<tr>
+<td align="left"><strong>SUI</strong></td>
+<td align="left">T1</td>
+<td align="left">~75%</td>
+<td align="left">🔴 Sangat Tinggi</td>
+<td align="left">Foundation + VC (a16z, Jump, dll) masih pegang mayoritas. Hanya 41% beredar</td>
+</tr>
+<tr>
+<td align="left"><strong>LINK</strong></td>
+<td align="left">T1</td>
+<td align="left">~55%</td>
+<td align="left">⚠️ Sedang-Tinggi</td>
+<td align="left">Tim Chainlink Labs memegang ~35% total suplai. Penjualan bertahap tapi konsisten</td>
+</tr>
+<tr>
+<td align="left"><strong>AERO</strong></td>
+<td align="left">T1</td>
+<td align="left">~60%</td>
+<td align="left">🔴 Tinggi</td>
+<td align="left">veAERO voting power terkonsentrasi pada beberapa protocol</td>
+</tr>
+<tr>
+<td align="left"><strong>KAS</strong></td>
+<td align="left">T1</td>
+<td align="left">~30%</td>
+<td align="left">✅ Rendah</td>
+<td align="left">PoW = distribusi mining alami. Suplai 96.6% sudah beredar</td>
+</tr>
+<tr>
+<td align="left"><strong>AR</strong></td>
+<td align="left">T1</td>
+<td align="left">~40%</td>
+<td align="left">⚠️ Sedang</td>
+<td align="left">Tim + Foundation masih pegang porsi, tapi 99.5% beredar</td>
+</tr>
+<tr>
+<td align="left"><strong>TAO</strong></td>
+<td align="left">T1</td>
+<td align="left">~45%</td>
+<td align="left">⚠️ Sedang</td>
+<td align="left">Subnet owner + miner dominan. Distribusi masih dalam proses via emisi</td>
+</tr>
+<tr>
+<td align="left"><strong>HNT</strong></td>
+<td align="left">T1</td>
+<td align="left">~50%</td>
+<td align="left">⚠️ Sedang</td>
+<td align="left">Hotspot operator besar &amp; Nova Labs. Distribusi via proof-of-coverage</td>
+</tr>
+<tr>
+<td align="left"><strong>APT</strong></td>
+<td align="left">T1</td>
+<td align="left">~80%</td>
+<td align="left">🔴 Sangat Tinggi</td>
+<td align="left">Foundation + VC masih dominan. TAPI: setelah Oktober unlock berkurang drastis</td>
+</tr>
+<tr>
+<td align="left"><strong>ARB</strong></td>
+<td align="left">T2</td>
+<td align="left">~65%</td>
+<td align="left">🔴 Tinggi</td>
+<td align="left">DAO Treasury + VC (Offchain Labs). Token = governance only</td>
+</tr>
+<tr>
+<td align="left"><strong>MINA</strong></td>
+<td align="left">T2</td>
+<td align="left">~40%</td>
+<td align="left">⚠️ Sedang</td>
+<td align="left">Foundation masih ada, tapi 100% beredar. Risiko lebih rendah</td>
+</tr>
+<tr>
+<td align="left"><strong>GRT</strong></td>
+<td align="left">T2</td>
+<td align="left">~50%</td>
+<td align="left">⚠️ Sedang</td>
+<td align="left">Curator + Indexer besar. Wajib staking untuk melawan dilusi</td>
+</tr>
+<tr>
+<td align="left"><strong>RUNE</strong></td>
+<td align="left">T2</td>
+<td align="left">~35%</td>
+<td align="left">✅ Rendah</td>
+<td align="left">Desentralisasi via node operator. Deflasioner aktif</td>
+</tr>
+<tr>
+<td align="left"><strong>TIA</strong></td>
+<td align="left">T2</td>
+<td align="left">~60%</td>
+<td align="left">🔴 Tinggi</td>
+<td align="left">Early investor + Foundation. Unlock masih berlangsung</td>
+</tr>
+<tr>
+<td align="left"><strong>OP</strong></td>
+<td align="left">T2</td>
+<td align="left">~70%</td>
+<td align="left">🔴 Sangat Tinggi</td>
+<td align="left">OP Foundation + VC. Hanya 53% beredar</td>
+</tr>
+<tr>
+<td align="left"><strong>ZK</strong></td>
+<td align="left">T2</td>
+<td align="left">~75%</td>
+<td align="left">🔴 Sangat Tinggi</td>
+<td align="left">Matter Labs + VC. Hanya 51.5% beredar</td>
+</tr>
+<tr>
+<td align="left"><strong>W</strong></td>
+<td align="left">T2</td>
+<td align="left">~60%</td>
+<td align="left">🔴 Tinggi</td>
+<td align="left">Jump Crypto + VC. Sejarah bridge exploit</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>3. 📈 Funding Rate &amp; Open Interest — Status Leverage Pasar</h2>
+<div class="alert alert-important"><strong>🚨 PENTING:</strong>
+<strong>Funding Rate positif tinggi (&gt;0.03%/8jam)</strong> = pasar didominasi posisi long leveraged. Reli yang didorong leverage sangat rapuh — rawan <strong>liquidation cascade</strong> (dump -15% dalam hitungan jam).</p>
+<p><strong>Cara baca:</strong> Funding Rate normal = 0.005-0.01%. Di atas 0.03% = overheated. Negatif = short dominan.</div>
+<table>
+<thead>
+<tr>
+<th align="left">Koin</th>
+<th align="left">Tier</th>
+<th align="left">Funding Rate (est.)</th>
+<th align="left">OI Relatif</th>
+<th align="left">Verdict Leverage</th>
+<th align="left">Catatan</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>SOL</strong></td>
+<td align="left">T1</td>
+<td align="left">~0.008%/8h</td>
+<td align="left">Tinggi</td>
+<td align="left">✅ Normal</td>
+<td align="left">Reli +17% 30D didorong spot buying, bukan leverage berlebihan</td>
+</tr>
+<tr>
+<td align="left"><strong>ZEC</strong></td>
+<td align="left">T1</td>
+<td align="left">N/A</td>
+<td align="left">Rendah</td>
+<td align="left">✅ Spot-driven</td>
+<td align="left">Tidak banyak perp futures untuk ZEC. Reli +107% murni spot + ETF</td>
+</tr>
+<tr>
+<td align="left"><strong>NEAR</strong></td>
+<td align="left">T1</td>
+<td align="left">~0.025-0.04%/8h</td>
+<td align="left">Tinggi</td>
+<td align="left">🔴 <strong>Overheated</strong></td>
+<td align="left">Reli +177% disertai funding rate tinggi. SANGAT RAWAN liquidation cascade</td>
+</tr>
+<tr>
+<td align="left"><strong>QNT</strong></td>
+<td align="left">T1</td>
+<td align="left">~0.01-0.02%/8h</td>
+<td align="left">Rendah</td>
+<td align="left">⚠️ Sedikit Elevated</td>
+<td align="left">Volume futures QNT relatif kecil dibanding spot. Reli +275% kemungkinan spot-driven</td>
+</tr>
+<tr>
+<td align="left"><strong>SUI</strong></td>
+<td align="left">T1</td>
+<td align="left">~0.02-0.035%/8h</td>
+<td align="left">Tinggi</td>
+<td align="left">⚠️ Elevated</td>
+<td align="left">Reli +66% dengan funding mulai tinggi. Hati-hati</td>
+</tr>
+<tr>
+<td align="left"><strong>LINK</strong></td>
+<td align="left">T1</td>
+<td align="left">~0.008%/8h</td>
+<td align="left">Sedang</td>
+<td align="left">✅ Normal</td>
+<td align="left">Pergerakan organik. Reli +21% moderat</td>
+</tr>
+<tr>
+<td align="left"><strong>AERO</strong></td>
+<td align="left">T1</td>
+<td align="left">~0.015%/8h</td>
+<td align="left">Rendah</td>
+<td align="left">✅ Normal</td>
+<td align="left">MCap kecil, OI rendah. Reli organik</td>
+</tr>
+<tr>
+<td align="left"><strong>KAS</strong></td>
+<td align="left">T1</td>
+<td align="left">~0.01%/8h</td>
+<td align="left">Rendah</td>
+<td align="left">✅ Normal</td>
+<td align="left">PoW coin — volume futures sangat kecil</td>
+</tr>
+<tr>
+<td align="left"><strong>AR</strong></td>
+<td align="left">T1</td>
+<td align="left">~0.03-0.05%/8h</td>
+<td align="left">Sedang</td>
+<td align="left">🔴 <strong>Overheated</strong></td>
+<td align="left">Reli +129% dengan RSI 81 + funding tinggi = SANGAT BAHAYA</td>
+</tr>
+<tr>
+<td align="left"><strong>TAO</strong></td>
+<td align="left">T1</td>
+<td align="left">~0.015%/8h</td>
+<td align="left">Sedang</td>
+<td align="left">⚠️ Sedikit Elevated</td>
+<td align="left">Reli +36% moderat. Masih aman tapi perlu dipantau</td>
+</tr>
+<tr>
+<td align="left"><strong>HNT</strong></td>
+<td align="left">T1</td>
+<td align="left">N/A</td>
+<td align="left">Sangat Rendah</td>
+<td align="left">✅ Spot-driven</td>
+<td align="left">Volume futures HNT nyaris nol. Reli murni spot</td>
+</tr>
+<tr>
+<td align="left"><strong>APT</strong></td>
+<td align="left">T1</td>
+<td align="left">~0.01%/8h</td>
+<td align="left">Sedang</td>
+<td align="left">✅ Normal</td>
+<td align="left">Reli +52% tapi funding stabil. Katalis fundamental (Oktober)</td>
+</tr>
+<tr>
+<td align="left"><strong>ARB</strong></td>
+<td align="left">T2</td>
+<td align="left">~0.02%/8h</td>
+<td align="left">Sedang</td>
+<td align="left">⚠️ Sedikit Elevated</td>
+<td align="left">Reli +149% tapi funding belum ekstrem</td>
+</tr>
+<tr>
+<td align="left"><strong>MINA</strong></td>
+<td align="left">T2</td>
+<td align="left">~0.01%/8h</td>
+<td align="left">Rendah</td>
+<td align="left">✅ Normal</td>
+<td align="left">MCap kecil, futures minim</td>
+</tr>
+<tr>
+<td align="left"><strong>GRT</strong></td>
+<td align="left">T2</td>
+<td align="left">~0.008%/8h</td>
+<td align="left">Rendah</td>
+<td align="left">✅ Normal</td>
+<td align="left">Reli organik</td>
+</tr>
+<tr>
+<td align="left"><strong>RUNE</strong></td>
+<td align="left">T2</td>
+<td align="left">~0.012%/8h</td>
+<td align="left">Rendah</td>
+<td align="left">✅ Normal</td>
+<td align="left">Reli organik, volume futures kecil</td>
+</tr>
+<tr>
+<td align="left"><strong>TIA</strong></td>
+<td align="left">T2</td>
+<td align="left">~0.015%/8h</td>
+<td align="left">Sedang</td>
+<td align="left">⚠️ Sedikit Elevated</td>
+<td align="left">Narasi DA Layer menarik spekulan</td>
+</tr>
+<tr>
+<td align="left"><strong>OP</strong></td>
+<td align="left">T2</td>
+<td align="left">~0.01%/8h</td>
+<td align="left">Sedang</td>
+<td align="left">✅ Normal</td>
+<td align="left">Reli organik</td>
+</tr>
+<tr>
+<td align="left"><strong>ZK</strong></td>
+<td align="left">T2</td>
+<td align="left">~0.01%/8h</td>
+<td align="left">Rendah</td>
+<td align="left">✅ Normal</td>
+<td align="left">Volume futures kecil</td>
+</tr>
+<tr>
+<td align="left"><strong>W</strong></td>
+<td align="left">T2</td>
+<td align="left">~0.008%/8h</td>
+<td align="left">Sangat Rendah</td>
+<td align="left">✅ Normal</td>
+<td align="left">Sentimen lemah = sedikit leverage</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>4. 🚨 Matriks Risiko Gabungan — Siapa yang PALING BERBAHAYA?</h2>
+<div class="alert alert-warning"><strong>⚠️ PERINGATAN:</strong>
+Tabel ini menggabungkan ketiga faktor risiko. Koin dengan <strong>3 bendera merah</strong> = risiko dump tiba-tiba sangat tinggi.</div>
+<table>
+<thead>
+<tr>
+<th align="left">Koin</th>
+<th align="left">Unlock Risk</th>
+<th align="left">Whale Risk</th>
+<th align="left">Leverage Risk</th>
+<th align="left">Total 🔴</th>
+<th align="left">Verdict Risiko</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>NEAR</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">⚠️ Sedang</td>
+<td align="left">🔴 Overheated</td>
+<td align="left">1 🔴</td>
+<td align="left">⚠️ <strong>Jangan beli sekarang</strong> (leverage tinggi)</td>
+</tr>
+<tr>
+<td align="left"><strong>AR</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">⚠️ Sedang</td>
+<td align="left">🔴 Overheated</td>
+<td align="left">1 🔴</td>
+<td align="left">⚠️ <strong>Jangan beli sekarang</strong> (RSI + leverage)</td>
+</tr>
+<tr>
+<td align="left"><strong>SUI</strong></td>
+<td align="left">🔴 Unlock bulanan</td>
+<td align="left">🔴 75% top holders</td>
+<td align="left">⚠️ Elevated</td>
+<td align="left">2 🔴</td>
+<td align="left">🔴 <strong>Hati-hati sekali</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>APT</strong></td>
+<td align="left">⚠️ Unlock tapi TERAKHIR</td>
+<td align="left">🔴 80% top holders</td>
+<td align="left">✅ Normal</td>
+<td align="left">1 🔴</td>
+<td align="left">⚠️ Setelah Oktober membaik drastis</td>
+</tr>
+<tr>
+<td align="left"><strong>QNT</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">🔴 70% top holders</td>
+<td align="left">⚠️ Sedikit</td>
+<td align="left">1 🔴</td>
+<td align="left">⚠️ Suplai langka tapi terkonsentrasi</td>
+</tr>
+<tr>
+<td align="left"><strong>ZK</strong></td>
+<td align="left">🔴 173M token unlock</td>
+<td align="left">🔴 75% top holders</td>
+<td align="left">✅ Normal</td>
+<td align="left">2 🔴</td>
+<td align="left">🔴 <strong>Paling berbahaya di T2</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>OP</strong></td>
+<td align="left">⚠️ Moderat</td>
+<td align="left">🔴 70% top holders</td>
+<td align="left">✅ Normal</td>
+<td align="left">1 🔴</td>
+<td align="left">⚠️ ARB lebih baik</td>
+</tr>
+<tr>
+<td align="left"><strong>TIA</strong></td>
+<td align="left">⚠️ Moderat</td>
+<td align="left">🔴 60% top holders</td>
+<td align="left">⚠️ Elevated</td>
+<td align="left">1 🔴</td>
+<td align="left">⚠️ Spekulatif</td>
+</tr>
+<tr>
+<td align="left"><strong>ARB</strong></td>
+<td align="left">⚠️ 92.7M unlock</td>
+<td align="left">🔴 65% top holders</td>
+<td align="left">⚠️ Elevated</td>
+<td align="left">1 🔴</td>
+<td align="left">⚠️ Revenue kuat tapi unlock besar</td>
+</tr>
+<tr>
+<td align="left"><strong>AERO</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">🔴 60% veAERO</td>
+<td align="left">✅ Normal</td>
+<td align="left">1 🔴</td>
+<td align="left">⚠️ Inflasi 10.9% tetap</td>
+</tr>
+<tr>
+<td align="left"><strong>LINK</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">⚠️ 55% (tim jual bertahap)</td>
+<td align="left">✅ Normal</td>
+<td align="left">0 🔴</td>
+<td align="left">✅ <strong>Paling aman</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>SOL</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">⚠️ 48% (di staking)</td>
+<td align="left">✅ Normal</td>
+<td align="left">0 🔴</td>
+<td align="left">✅ <strong>Paling aman</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>ZEC</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">✅ 25% (PoW)</td>
+<td align="left">✅ Spot-driven</td>
+<td align="left">0 🔴</td>
+<td align="left">✅ <strong>Paling aman</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>KAS</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">✅ 30% (PoW)</td>
+<td align="left">✅ Normal</td>
+<td align="left">0 🔴</td>
+<td align="left">✅ Aman (risiko dari fundamental, bukan distribusi)</td>
+</tr>
+<tr>
+<td align="left"><strong>MINA</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">⚠️ 40%</td>
+<td align="left">✅ Normal</td>
+<td align="left">0 🔴</td>
+<td align="left">✅ Aman</td>
+</tr>
+<tr>
+<td align="left"><strong>RUNE</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">✅ 35%</td>
+<td align="left">✅ Normal</td>
+<td align="left">0 🔴</td>
+<td align="left">✅ Aman (risiko dari exploit history)</td>
+</tr>
+<tr>
+<td align="left"><strong>TAO</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">⚠️ 45%</td>
+<td align="left">⚠️ Elevated</td>
+<td align="left">0 🔴</td>
+<td align="left">✅ Relatif aman</td>
+</tr>
+<tr>
+<td align="left"><strong>HNT</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">⚠️ 50%</td>
+<td align="left">✅ Spot-driven</td>
+<td align="left">0 🔴</td>
+<td align="left">✅ Aman</td>
+</tr>
+<tr>
+<td align="left"><strong>GRT</strong></td>
+<td align="left">✅ Aman</td>
+<td align="left">⚠️ 50%</td>
+<td align="left">✅ Normal</td>
+<td align="left">0 🔴</td>
+<td align="left">✅ Aman (risiko dari inflasi abadi)</td>
+</tr>
+<tr>
+<td align="left"><strong>W</strong></td>
+<td align="left">⚠️ Unlock</td>
+<td align="left">🔴 60%</td>
+<td align="left">✅ Normal</td>
+<td align="left">1 🔴</td>
+<td align="left">⚠️ Jump Crypto dominan</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. ✅ Kesimpulan: Koin Teraman vs Paling Berbahaya</h2>
+<h3>🟢 PALING AMAN (0 bendera merah di ketiga faktor):</h3>
+<ol>
+<li><strong>ZEC</strong> — PoW, distribusi merata, reli spot-driven, tidak ada unlock</li>
+<li><strong>SOL</strong> — Distribusi di staking, leverage normal, suplai 92.6%</li>
+<li><strong>LINK</strong> — Tim jual bertahap tapi organik, leverage normal</li>
+<li><strong>KAS</strong> — PoW, distribusi mining, leverage minimal</li>
+<li><strong>MINA</strong> — 100% beredar, leverage minimal</li>
+<li><strong>RUNE</strong> — Deflasioner, distribusi node operator</li>
+</ol>
+<h3>🔴 PALING BERBAHAYA (2+ bendera merah):</h3>
+<ol>
+<li><strong>ZK (zkSync)</strong> — Unlock 173M token + 75% terkonsentrasi = <strong>BOM WAKTU</strong></li>
+<li><strong>SUI</strong> — Unlock bulanan + 75% terkonsentrasi + leverage elevated</li>
+<li><strong>NEAR</strong> — Leverage SANGAT tinggi (funding rate &gt;0.03%). Jangan beli meskipun fundamental bagus</li>
+<li><strong>AR</strong> — RSI 81 + funding rate overheated. Tunggu koreksi</li>
+</ol>
+<hr>
+<div class="alert" style="background: rgba(255,255,255,0.05); border-left: 4px solid #64748b;"><strong>📝 CATATAN:</strong>
+<strong>Sumber Data &amp; Limitasi:</strong></p>
+<ul>
+<li>Funding rate: Estimasi berdasarkan data Coinglass aggregate (Binance, OKX, Bybit). Berubah setiap 8 jam.</li>
+<li>Holder concentration: Estimasi berdasarkan Etherscan/Solscan top holders. Beberapa wallet exchange tidak bisa dibedakan dari whale individual.</li>
+<li>Unlock calendar: Berdasarkan data Tokenomist/TokenUnlocks September 2026. Jadwal bisa berubah oleh governance proposal proyek.</li>
+<li>Data ini harus <strong>diverifikasi ulang</strong> sebelum entry karena bersifat snapshot, bukan real-time.</li>
+</ul>
+</div>
+
+</div><!-- end tab-risiko -->
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--                      TAB: WEEKLY PLAN                          -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-weekly" class="tab-content">
+<h1 style="font-family:'Outfit',sans-serif; color:var(--blue); margin-top:1rem; font-size:1.8rem; border-bottom:2px solid rgba(59, 130, 246, 0.3); padding-bottom:0.5rem;">
+    🗓️ Weekly Plan (Update 29 September 2026)
+</h1>
+
+<div class="summary-grid" style="margin-top: 2rem;">
+    <!-- 1. Kalender Makro -->
+    <div class="coin-card" style="margin-bottom: 0;">
+        <h3 style="color:var(--primary)">📅 1. Badai Makro & Geopolitik</h3>
+        <ul style="margin-left: 1.2rem; color: #94a3b8; font-size: 0.9rem; line-height: 1.6;">
+            <li><strong>Geopolitik (NEW):</strong> Ketegangan Iran/Selat Hormuz. Harga minyak naik, memicu ketakutan inflasi global.</li>
+            <li><strong>Rabu, 30 Sep (20:30 WIB):</strong> Rilis <strong>PCE</strong> Agustus (Indikator inflasi The Fed).</li>
+            <li><strong>Jumat, 2 Okt (20:30 WIB):</strong> Rilis <strong>NFP</strong> September (Data tenaga kerja).</li>
+        </ul>
+    </div>
+
+    <!-- 2. Divergensi Sektoral -->
+    <div class="coin-card" style="margin-bottom: 0;">
+        <h3 style="color:var(--green)">🔄 2. Rotasi Bandar (Sektoral)</h3>
+        <ul style="margin-left: 1.2rem; color: #94a3b8; font-size: 0.9rem; line-height: 1.6;">
+            <li><strong>Institusi & RWA (PUMPING):</strong> XRP, QNT, HBAR, LINK kebal badai karena narasi BlackRock/Enterprise.</li>
+            <li><strong>AI & Retail L1 (DUMPING):</strong> TAO, NEAR, SUI dihajar aksi jual (Sell the News).</li>
+            <li><strong>Kesimpulan:</strong> Tunggu badai reda untuk menyerok AI/L1 di harga diskon bawah.</li>
+        </ul>
+    </div>
+
+    <!-- 3. Sentimen BTC -->
+    <div class="coin-card" style="margin-bottom: 0;">
+        <h3 style="color:var(--yellow)">📉 3. Struktur BTC (Koreksi)</h3>
+        <ul style="margin-left: 1.2rem; color: #94a3b8; font-size: 0.9rem; line-height: 1.6;">
+            <li><strong>Kondisi Saat Ini:</strong> BTC turun ke <strong>$82.800</strong> akibat *Risk-Off* makro.</li>
+            <li><strong>Target Pantulan Bawah:</strong> $79.600 (EMA50) atau maksimal $74.500 (EMA20).</li>
+            <li><strong>Verdict:</strong> Biarkan BTC berdarah. Jangan tangkap pisau jatuh sebelum data PCE keluar hari Rabu.</li>
+        </ul>
+    </div>
+</div>
+
+<h2 style="font-family:'Outfit',sans-serif; color:var(--text-bright); margin-top:3rem; font-size:1.5rem;">📝 THE WEEKLY PLAN (Mode Eksekusi: Sniper)</h2>
+
+<div class="alert alert-important" style="margin-top: 1rem;">
+    <strong>1. Alokasi Portofolio: 100% CASH (Mode Tiarap)</strong><br>
+    Keputusan menahan <strong>100% Cash</strong> saat ini sangat BRILIAN. Market sedang dibersihkan dari *leverage* ritel akibat ketakutan inflasi/minyak. Tetap pegang cash, jangan FOMO ke koin hijau (QNT/XRP), tunggu koin incaranmu merah parah.
+</div>
+
+<div class="alert" style="background: rgba(16,185,129,0.1); border-left: 4px solid var(--green); margin-top: 1rem;">
+    <strong>2. Setup Jaring (DCA Bawah):</strong><br>
+    Pasang *Limit Order* atau aktifkan bot Pine Script hanya di level "Entry Ideal".
+    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+        <li><strong>ARB:</strong> Serok di <strong>$0.20 - $0.22</strong> (Sudah masuk zona beli hari ini!)</li>
+        <li><strong>TIA:</strong> Serok di <strong>$0.40 - $0.45</strong> (Sudah masuk zona beli hari ini!)</li>
+        <li><strong>SUI & APT:</strong> Biarkan terus turun hingga SUI $1.05 dan APT $0.75.</li>
+    </ul>
+</div>
+
+<div class="alert alert-warning" style="margin-top: 1rem;">
+    <strong>3. Warning Koin Syubhat / Berbahaya:</strong>
+    <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color:#fcd34d;">
+        <li><strong style="color:#ef4444">Hindari KII:</strong> Ekosistem Valas/FX (*leverage* Riba).</li>
+        <li><strong style="color:var(--yellow)">Pantau VIRTUAL:</strong> Menunjukkan *relative strength* (hijau sendiri saat AI lain merah).</li>
+        <li><strong style="color:var(--green)">CNPY:</strong> Fundamental L1 murni (Halal), tapi High Risk karena baru rilis mainnet. Alokasi maksimal 5%.</li>
+    </ul>
+</div>
+
+</div><!-- end tab-weekly -->
+
+
+
+</div><!-- end container -->
+
+<!-- ═══════════════════════════════════════════ FOOTER ═══ -->
+<div style="text-align:center; padding:2rem; color:#475569; font-size:0.75rem; border-top:1px solid var(--border); margin-top:2rem;">
+    <strong>DISCLAIMER:</strong> Dokumen ini BUKAN nasihat keuangan. Selalu gunakan ukuran posisi yang sesuai toleransi risiko Anda.<br>
+    Data: CoinGecko, DeFi Llama, Thesis Investasi Internal · Terakhir diperbarui: 28 September 2026
+</div>
+
+<script>
+function showTab(tabName, btn) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    // Remove active from all buttons
+    document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active-tier1', 'active-tier2', 'active-all');
+    });
+    // Show selected tab
+    document.getElementById('tab-' + tabName).classList.add('active');
+    // Add active class
+    if (tabName === 'tier1') btn.classList.add('active-tier1');
+    else if (tabName === 'tier2') btn.classList.add('active-tier2');
+    else btn.classList.add('active-all');
+}
+
+// =============================================
+// LIVE FUNDING RATE - Binance Public API (GRATIS, tanpa API Key!)
+// Endpoint: https://fapi.binance.com/fapi/v1/premiumIndex
+// =============================================
+const COIN_MAP = {
+    'VIRTUAL': 'VIRTUALUSDT', 'GRAM': 'GRAMUSDT', 'HBAR': 'HBARUSDT',
+    'FET': 'FETUSDT', 'XRP': 'XRPUSDT', 'TIA': 'TIAUSDT',
+    'MINA': 'MINAUSDT', 'OP': 'OPUSDT', 'ZK': 'ZKUSDT',
+    'GRT': 'GRTUSDT', 'RUNE': 'RUNEUSDT', 'ARB': 'ARBUSDT',
+    'W': 'WUSDT', 'QNT': 'QNTUSDT', 'APT': 'APTUSDT',
+    'HNT': 'HNTUSDT', 'SUI': 'SUIUSDT', 'ZEC': 'ZECUSDT',
+    'AR': 'ARUSDT', 'KAS': 'KASUSDT', 'SOL': 'SOLUSDT',
+    'LINK': 'LINKUSDT', 'TAO': 'TAOUSDT', 'NEAR': 'NEARUSDT',
+    'AERO': 'AEROUSDT'
+};
+
+function getFRSignal(rate) {
+    const pct = rate * 100;
+    if (pct <= -0.02) return { label: '🟢 SHORT SQUEEZE!', bg: 'rgba(16,185,129,0.25)', color: '#10b981', score: 3 };
+    if (pct <= -0.005) return { label: '🟢 Negatif (Bullish)', bg: 'rgba(16,185,129,0.15)', color: '#10b981', score: 2 };
+    if (pct <= 0.015) return { label: '🔵 Normal', bg: 'rgba(59,130,246,0.15)', color: '#60a5fa', score: 1 };
+    if (pct <= 0.05) return { label: '⚠️ Agak Tinggi', bg: 'rgba(251,191,36,0.15)', color: '#fbbf24', score: 0 };
+    return { label: '🔴 OVERHEATED!', bg: 'rgba(239,68,68,0.2)', color: '#ef4444', score: -1 };
+}
+
+async function fetchFundingRates() {
+    const btn = document.getElementById('btn-refresh-fr');
+    const status = document.getElementById('api-status');
+    btn.disabled = true;
+    btn.textContent = '⏳ Mengambil data...';
+    status.innerHTML = '🔄 Menghubungi server Binance...';
+    
+    try {
+        // Coba beberapa cara untuk menghindari blokir CORS browser
+        const BINANCE_URL = 'https://fapi.binance.com/fapi/v1/premiumIndex';
+        const PROXIES = [
+            BINANCE_URL,  // Direct (works if served from server)
+            'https://api.allorigins.win/raw?url=' + encodeURIComponent(BINANCE_URL),
+            'https://corsproxy.io/?' + encodeURIComponent(BINANCE_URL),
+            'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(BINANCE_URL)
+        ];
+        
+        let data = null;
+        let lastErr = null;
+        for (const url of PROXIES) {
+            try {
+                const resp = await fetch(url, { signal: AbortSignal.timeout(8000) });
+                if (!resp.ok) continue;
+                data = await resp.json();
+                if (Array.isArray(data) && data.length > 0) break;
+            } catch(e) { lastErr = e; continue; }
+        }
+        if (!data || !Array.isArray(data)) throw new Error('Semua proxy gagal: ' + (lastErr ? lastErr.message : 'No data'));
+        
+        // Build lookup: symbol -> lastFundingRate
+        const frMap = {};
+        data.forEach(item => { frMap[item.symbol] = parseFloat(item.lastFundingRate); });
+        
+        // Find all rows in the master table
+        const table = document.querySelector('#tab-master .master-table');
+        if (!table) { status.innerHTML = '❌ Tabel R/R tidak ditemukan'; return; }
+        
+        const rows = table.querySelectorAll('tr');
+        let updated = 0;
+        let notFound = [];
+        
+        // Update BTC banner
+        const btcFR = frMap['BTCUSDT'];
+        if (btcFR !== undefined) {
+            const btcPct = (btcFR * 100).toFixed(4);
+            const btcBanner = document.querySelector('#tab-master > div:nth-of-type(1)');
+            if (btcBanner) {
+                const btcSignal = getFRSignal(btcFR);
+                const statusLabel = btcFR * 100 <= 0.015 ? '🟢 AMAN' : (btcFR * 100 <= 0.05 ? '⚠️ HATI-HATI' : '🔴 BAHAYA');
+                btcBanner.querySelector('div:nth-child(2) > div:first-child').innerHTML = 'STATUS BTC: ' + statusLabel + ' (FR: ' + btcPct + '%)';
+                btcBanner.querySelector('div:nth-child(2) > div:last-child').innerHTML = 'Data LIVE dari Binance Futures. Update: ' + new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}) + ' WIB';
+            }
+        }
+        
+        rows.forEach((row, idx) => {
+            if (idx === 0) return; // skip header
+            const cells = row.querySelectorAll('td');
+            if (cells.length < 11) return;
+            
+            // Get coin name from cell[1]
+            const coinName = cells[1].textContent.trim().replace(/[☪️\s]/g, '');
+            const binanceSymbol = COIN_MAP[coinName];
+            
+            if (!binanceSymbol || frMap[binanceSymbol] === undefined) {
+                notFound.push(coinName);
+                // Mark as N/A
+                cells[9].innerHTML = '<span class="pill" style="background:rgba(255,255,255,0.05); color:#64748b;">❓ N/A</span>';
+                return;
+            }
+            
+            const rate = frMap[binanceSymbol];
+            const signal = getFRSignal(rate);
+            const pctStr = (rate * 100).toFixed(4) + '%';
+            
+            cells[9].innerHTML = '<span class="pill" style="background:' + signal.bg + '; color:' + signal.color + '; cursor:help;" title="FR: ' + pctStr + '">' + signal.label + '</span>';
+            updated++;
+        });
+        
+        const now = new Date().toLocaleTimeString('id-ID', {timeZone: 'Asia/Jakarta'});
+        status.innerHTML = '✅ <strong>Berhasil!</strong> ' + updated + ' koin diperbarui dari Binance Futures (' + now + ' WIB)' + (notFound.length > 0 ? ' · Tidak ditemukan: ' + notFound.join(', ') : '');
+        status.style.color = '#10b981';
+        
+    } catch (err) {
+        status.innerHTML = '❌ Gagal: ' + err.message + '. Coba lagi dalam beberapa detik.';
+        status.style.color = '#ef4444';
+        console.error('Funding Rate Error:', err);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = '📡 Ambil Live Funding Rate (Binance API — GRATIS!)';
+    }
+}
+</script>
+
+</body>
+</html>
