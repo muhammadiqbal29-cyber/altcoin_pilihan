@@ -425,9 +425,9 @@
 const $=s=>document.querySelector(s),f=n=>n>=100?Math.round(n).toLocaleString('en-US'):n>=1?n.toFixed(2):n>=.01?n.toFixed(3):n.toFixed(4);
 const COLS=[['s','Koin'],['t','Tier'],['p','Harga'],['e','Entry'],['sl','SL'],['t1','TP1'],['t2','TP2'],['rr','R/R'],['g','Posisi vs entry'],['fl','Risiko'],['n','Catatan']];
 let D,live={},tier=0,sort='rr';
-function calc(c){const p=live[c.id]??c.p,m=c.e&&(c.e[0]+c.e[1])/2,r=m&&c.sl?m-c.sl:0,
+function calc(c){const p=live[c.s]??c.p,m=c.e&&(c.e[0]+c.e[1])/2,r=m&&c.sl?m-c.sl:0,
  rr=r>0?(c.t2-m)/r:null,gap=c.e?(p-c.e[1])/c.e[1]*100:null;
- const fl=(c.wh>=60)+(c.lev==='hot')+(c.ul===2);return{p,m,rr,gap,fl,slp:r>0?-r/m*100:null,lv:live[c.id]!=null}}
+ const fl=(c.wh>=60)+(c.lev==='hot')+(c.ul===2);return{p,m,rr,gap,fl,slp:r>0?-r/m*100:null,lv:live[c.s]!=null}}
 function render(){
  $('#tabs').innerHTML=[[0,'Semua'],[1,'Tier 1'],[2,'Tier 2']].map(([v,l])=>`<button class="tab-btn ${tier===v ? 'active' : ''}" data-t="${v}">${l}</button>`).join('')+
  `<select id="so" aria-label="Urutkan"><option value="rr">Urut: R/R</option><option value="fl">Urut: risiko tertinggi</option><option value="s">Urut: nama</option></select>`;
@@ -444,9 +444,9 @@ document.addEventListener('change',e=>{if(e.target.id==='so'){sort=e.target.valu
  D=await (await fetch('coins.json')).json();
  $('#dr').innerHTML=D.dropped.map(([a,b])=>`<li><b>${a}:</b> ${b}</li>`).join('');render();
  const days=(Date.now()-new Date(D.asOf))/864e5;
- try{const ids=D.coins.map(c=>c.id).filter(Boolean).join(',');
-  const r=await fetch('/api/prices?ids='+ids);if(!r.ok)throw 0;const j=await r.json();
-  D.coins.forEach(c=>{if(j[c.id]?.usd)live[c.id]=j[c.id].usd});render();
+ try{const syms=D.coins.map(c=>c.s).filter(Boolean).join(',');
+  const r=await fetch('/api/prices?symbols='+syms);if(!r.ok)throw 0;const j=await r.json();
+  D.coins.forEach(c=>{if(j[c.s])live[c.s]=j[c.s]});render();
   $('#st').textContent='Harga live (●) diperbarui '+new Date().toLocaleTimeString('id-ID')+'. Koin tanpa ● memakai snapshot '+D.asOf+'.';
  }catch{$('#st').innerHTML=`<span class="${days>1?'bd':'wa'}">Harga live gagal dimuat. Menampilkan snapshot ${D.asOf} (${Math.floor(days)} hari lalu), jangan dipakai sebagai harga saat ini.</span>`}
  try{const q=encodeURIComponent(D.coins.map(c=>c.s).join(','));const r=await fetch('/api/news?q='+q);if(!r.ok)throw 0;const n=await r.json();
