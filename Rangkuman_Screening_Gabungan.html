@@ -857,16 +857,14 @@
 
             for (let i = 0; i < Math.min(rows.length, 15); i++) {
                 const cols = rows[i].querySelectorAll('td');
-                if (cols.length >= 10) {
+                if (cols.length >= 8) {
                     let koin = cols[0].innerText.replace('🏆', '').replace('☪️', '').trim();
                     let tier = cols[1].innerText.trim();
                     let harga = cols[2].innerText.trim();
                     let entry = cols[3].innerText.trim();
-                    let rr = cols[7] ? cols[7].innerText.trim() : "N/A";
-                    let posisiVsEntry = cols[8] ? cols[8].innerText.trim() : "N/A";
-                    let risiko = cols[9] ? cols[9].innerText.trim() : "N/A";
-                    let catatan = cols[10] ? cols[10].innerText.trim() : "N/A";
-                    tableData += `- Koin: ${koin} (${tier})\n  Harga: ${harga}, Entry: ${entry}, Posisi vs Entry: ${posisiVsEntry}\n  Risk/Reward: ${rr}\n  Risiko (Whale/Funding/Unlock): ${risiko}\n  Catatan Khusus: ${catatan}\n\n`;
+                    let rr = cols[6] ? cols[6].innerText.trim() : "N/A";
+                    let risiko = cols[8] ? cols[8].innerText.trim() : "N/A";
+                    tableData += `- Koin: ${koin} (${tier})\n  Harga: ${harga}, Entry: ${entry}\n  Risk/Reward: ${rr}\n  Risiko (Whale/Funding/Unlock): ${risiko}\n\n`;
                 }
             }
 
