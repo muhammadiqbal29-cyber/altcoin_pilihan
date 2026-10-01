@@ -480,8 +480,14 @@ document.getElementById('askAIBtn').addEventListener('click', async () => {
             tableData += `- Koin: ${c.s}, Tier: ${c.t}, Harga Entry: ${entryStr}, TP2: ${c.t2 || "N/A"}\n`;
         });
     }
+
+    let beritaData = "Berita Makro & Kripto Hari Ini:\n";
+    const newsItems = document.querySelectorAll('#nw li a');
+    newsItems.forEach(el => {
+        beritaData += `- ${el.innerText}\n`;
+    });
     
-    const prompt = "Berdasarkan data tabel screening kripto berikut, berikan analisis ringkas (maksimal 3 paragraf) mengenai koin mana yang paling layak beli (fokus pada Tier 1) dan memiliki metrik Risk/Reward terbaik. Berikan argumen logis.\n\n" + tableData;
+    const prompt = "Berikan Analisis Arah Makro (Macro Direction) ke mana pergerakan pasar saat ini berdasarkan Pedoman Makro dan Berita Hari Ini. Setelah itu, pilih koin dari tabel di bawah yang paling layak dibeli (fokus Tier 1) beserta alasan singkatnya.\n\n" + beritaData + "\n" + tableData;
 
     try {
         const response = await fetch("/api/ai", {
