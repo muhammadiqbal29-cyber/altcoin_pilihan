@@ -476,8 +476,15 @@ document.getElementById('askAIBtn').addEventListener('click', async () => {
         // Ambil 15 koin pertama untuk dianalisis
         const topCoins = D.coins.slice(0, 15);
         topCoins.forEach(c => {
+            const k = typeof calc === 'function' ? calc(c) : {};
             const entryStr = c.e ? (c.e[0] + "-" + c.e[1]) : "N/A";
-            tableData += `- Koin: ${c.s}, Tier: ${c.t}, Harga Entry: ${entryStr}, TP2: ${c.t2 || "N/A"}\n`;
+            const currentPrice = k.p || c.p || "N/A";
+            const gap = k.gap != null ? k.gap.toFixed(1) + "%" : "N/A";
+            const rr = k.rr != null ? "1:" + k.rr.toFixed(1) : "N/A";
+            const whales = c.wh ? c.wh + "%" : "N/A";
+            const funding = c.lev || "Normal";
+            const unlock = c.ul === 2 ? "Unlock Besar" : c.ul === 1 ? "Unlock" : "Aman";
+            tableData += `- Koin: ${c.s} (Tier ${c.t})\n  Harga Sekarang: $${currentPrice}\n  Zona Entry: ${entryStr} (Jarak ke entry: ${gap})\n  Risk/Reward: ${rr}\n  Risiko: Paus ${whales}, Funding Rate ${funding}, Status Unlock ${unlock}\n  Catatan Khusus: ${c.n || "Tidak ada"}\n\n`;
         });
     }
 
@@ -487,7 +494,7 @@ document.getElementById('askAIBtn').addEventListener('click', async () => {
         beritaData += `- ${el.innerText}\n`;
     });
     
-    const prompt = "Berikan Analisis Arah Makro (Macro Direction) ke mana pergerakan pasar saat ini berdasarkan Pedoman Makro dan Berita Hari Ini. Setelah itu, pilih koin dari tabel di bawah yang paling layak dibeli (fokus Tier 1) beserta alasan singkatnya.\n\n" + beritaData + "\n" + tableData;
+    const prompt = "Berikan Analisis Arah Makro (Macro Direction) ke mana pergerakan pasar saat ini berdasarkan Pedoman Makro dan Berita Hari Ini. Setelah itu, evaluasi 15 koin di bawah ini. Pilih koin yang paling layak dibeli dengan mempertimbangkan: Jarak Harga Sekarang ke Zona Entry, Risk/Reward ratio, dan RISIKO (hindari koin dengan konsentrasi Paus/Whale tinggi, Funding Rate panas/hot, atau jadwal Unlock yang membahayakan). Berikan argumen logis dan maksimal 3-4 paragraf.\n\n" + beritaData + "\n" + tableData;
 
     try {
         const response = await fetch("/api/ai", {
