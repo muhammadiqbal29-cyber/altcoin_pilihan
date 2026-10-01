@@ -484,21 +484,12 @@ document.getElementById('askAIBtn').addEventListener('click', async () => {
     const prompt = "Berdasarkan data tabel screening kripto berikut, berikan analisis ringkas (maksimal 3 paragraf) mengenai koin mana yang paling layak beli (fokus pada Tier 1) dan memiliki metrik Risk/Reward terbaik. Berikan argumen logis.\n\n" + tableData;
 
     try {
-        const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
+        const response = await fetch("/api/ai", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer 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"
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                model: "nvidia/nemotron-3-super-120b-a12b",
-                messages: [
-                    {"role": "system", "content": "Anda adalah analis investasi kripto kuantitatif. Jawab dalam bahasa Indonesia. Gunakan tag HTML seperti <br>, <b>, atau <ul> untuk merapikan jawaban."},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature: 0.5,
-                max_tokens: 1024
-            })
+            body: JSON.stringify({ prompt: prompt })
         });
         
         const data = await response.json();
